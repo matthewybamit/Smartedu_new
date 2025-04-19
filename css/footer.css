@@ -1,0 +1,46 @@
+footer {
+    font-family: Arial, sans-serif;
+    background-color: #122D64;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+footer ul {
+    margin-bottom: 40px;
+    display: flex;
+    list-style: none;
+    gap: 60px;
+    justify-content: center;
+}
+
+footer ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    footer {
+        padding: 20px; /* Keeping consistent padding */
+        margin: 0;
+        height: 380px;
+    }
+  
+    footer ul {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+      list-style: none;
+      padding: 0;
+    }
+  
+    footer ul li a {
+      font-size: 16px;
+    }
+  
+    .reserve {
+      font-size: 14px;
+    }
+}

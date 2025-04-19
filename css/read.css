@@ -1,0 +1,266 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    height: auto;
+    background-color: #122D64;
+    color: #fff;
+    
+}
+
+
+.image-button {
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    left:60px;
+}
+
+.image-button img {
+    width: 50px; /* Adjust size as needed */
+    border-radius: 5px; /* Optional: Rounded corners */
+}
+.logowl {
+    
+    width: 60px;
+    height: auto;
+    margin-left: 10%;
+}
+.logo {
+    font-family: "Bigelow Rules", serif;
+    
+    font-size: 40px ;
+    
+}
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.background {
+    padding-bottom: 2%;
+    width: 100%;
+    min-height: 100vh; /* Ensures it covers at least the full viewport height */
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(to bottom, #122D64, #82A0DC);
+    color: white;
+    position: relative; /* Keeps it positioned without affecting scrollbars */
+}
+
+.readFrame {
+    position: relative;
+    background-color: #D9D9D9;
+    border-style: solid;
+    border-color: black;
+    border-width: 2px;
+    padding: 300px 580px;
+    border-radius: 10px;
+
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 120px;
+    top: 40px;
+    color: black;
+}
+
+.chapters{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    
+  border-radius: 10px;
+    padding: 10px 10px;
+    background-color: transparent;
+}
+.chapters h1{
+    position:absolute;
+    font-size: 20px;
+    display: flex; 
+    top: 20px;
+    left: 120px;
+}
+
+.scroll-chapters {
+    margin-top: 70px;
+    background-color: transparent;
+    overflow-y: auto;
+    height: 630px;
+    width: 300px; /* Adjusted width */
+}
+
+.scroll-chapters::-webkit-scrollbar {
+    width: 8px;
+    background: white;
+    border-radius: 4px;
+}
+
+.scroll-chapters::-webkit-scrollbar-track {
+    width: 8px;
+    background: #ffffff;
+    border-radius: 4px;
+}
+
+ 
+ .scroll-chapters::-webkit-scrollbar-thumb {
+     background: #C97920;
+     border-radius: 4px;
+ }
+ 
+ .scroll-chapters::-webkit-scrollbar-thumb:hover {
+    background: #C97920;
+     border-radius: 4px;
+ }
+ .grid-num{
+    display: grid;
+    grid-template-columns: 1fr ;
+    grid-gap: 5px;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    left: 10px;
+    font-size: 15px;
+}
+
+.grid-title {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    margin-top: 20px;
+    margin-left: auto; /* Automatically adjusts margin-left */
+    margin-right: 400px;
+    margin-bottom: 10px;
+    left: 10px;
+    font-size: 10px;
+    width: 100%; /* Adjusted width */
+}
+
+.grid-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px 20px;
+    
+    margin-left: 30px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    left: 10px;
+    padding-right: 130px;
+}
+
+div.readcontent {
+    text-align: center;
+    color:black;
+
+}
+.scroll-read{
+   margin-top: 100px;
+    background-color: transparent;
+    overflow-y: auto;
+    height: 600px;
+
+}
+.scroll-read::-webkit-scrollbar {
+    width: 8px;
+}
+
+.conscroll-readtent::-webkit-scrollbar-thumb {
+    background: #C97920;
+    border-radius: 4px;
+}
+
+.scroll-read::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+.readcontent {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    
+    padding-bottom: 50px;
+    margin-left:300px;
+    border-radius: 10px;
+    margin-bottom: 300px;
+    background-color: transparent;
+} 
+
+.readcontent h2{
+    position: relative;
+    font-size: 20px;
+    display: flex;
+    margin-left: 50%;
+    margin-right: 50%;  
+    
+
+}
+
+
+.readcontent p{
+    position: relative;
+    top: 20px;
+    font-size: 12px;
+    display: flex;
+    margin-left: 50px; 
+    margin-right: 50px;
+    line-height: 2.5;
+    justify-content: center;
+    text-align: justify;
+}
+.save{
+    position:absolute;
+    top: 25px;
+    right: 290px;
+    background-color: transparent;
+    font-size: 15px;
+    color:black;
+    background: none;  /* Removes background color */
+    border: none;      /* Removes border/outline */
+    outline: none;     /* Removes outline when focused */
+    padding: 5px 10px; /* Adjust padding if needed */
+    cursor: pointer;   /* Keeps the cursor behavior */
+   
+}
+.finish{
+    position:absolute;
+    top: 25px;
+    right: 170px;
+    background-color: transparent;
+    font-size: 15px;
+    color:black;
+    background: none;  /* Removes background color */
+    border: none;      /* Removes border/outline */
+    outline: none;     /* Removes outline when focused */
+    padding: 5px 10px; /* Adjust padding if needed */
+    cursor: pointer;   /* Keeps the cursor behavior */
+}
+.start{
+    position:absolute;
+    top: 25px;
+    right: 50px;
+    background-color: transparent;
+    font-size: 15px;
+    color:black;
+    background: none;  /* Removes background color */
+    border: none;      /* Removes border/outline */
+    outline: none;     /* Removes outline when focused */
+    padding: 5px 10px; /* Adjust padding if needed */
+    cursor: pointer;   /* Keeps the cursor behavior */
+}
+.start:hover{
+    color:#C97920;
+}
+.finish:hover{
+    color:#C97920;
+}
+.save:hover{
+    color:#C97920;
+}

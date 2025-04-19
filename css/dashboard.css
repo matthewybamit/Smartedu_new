@@ -1,0 +1,531 @@
+body {
+    font-family: Arial, sans-serif;
+    
+}
+
+header {
+    height: auto;
+    background-color: #122D64;
+    color: #fff;
+    
+}
+
+
+.image-button {
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    left:60px;
+}
+
+.image-button img {
+    width: 50px; /* Adjust size as needed */
+    border-radius: 5px; /* Optional: Rounded corners */
+}
+.logowl {
+    
+    width: 60px;
+    height: auto;
+    margin-left: 10%;
+}
+.logo {
+    font-family: "Bigelow Rules", serif;
+    
+    font-size: 40px ;
+    
+}
+
+.background{
+    height: 900px;
+    display: flex;
+    justify-content: center;
+    
+    
+    background: linear-gradient(to bottom,#122D64, #82A0DC);
+    color: white;
+}
+.modules-txt {
+    position:absolute;
+    text-align: center;
+    
+    font-size: 30px;
+    margin-top: 30px;
+    
+}
+.topbox{
+position: relative;
+width: 1200px;
+height: 190px;
+left: 10px;
+top: 80px;
+background-color:  #F0F1F3;
+filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+border-radius: 10px;
+}
+.circle-button {
+    width: 150px;                        
+    height: 150px;                       
+    background-color: #ddd;              
+    border: none;                        
+    border-radius: 50%;                 
+    display: flex;                       
+    align-items: center;                 
+    justify-content: center;             
+    cursor: pointer;                     
+    font-size: 16px;                     
+    color: #333;                         
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);  
+    transition: background-color 0.3s ease;
+    position: relative;                  
+    overflow: hidden;  
+    margin-left: 30px;   
+    margin-top: 20px;               
+}
+
+.circle-button:hover {
+    background-color: #ccc;              
+}
+
+.button-image {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 50%;                  
+    display: none;                       
+}
+
+.button-text {
+    display: block;                     
+}
+
+
+.circle-button img.uploaded {
+    display: block;
+}
+
+.circle-button span.uploaded {
+    display: none;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;        /* Stack h3 elements vertically */
+    gap: 1px;     
+    margin-left: 200px;  
+    margin-top: -140px;                 /* Vertical gap between Name and Age */
+}
+
+.name1, .age2 {
+    font-size: 20px;
+    color: #000;
+                      /* Remove default margin */
+}
+.score-section {
+    position:absolute;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    gap: 30px;
+    right:20px;
+    top:20px;
+}
+.average-score {
+    display: flex;           /* Make it a flex container */
+    flex-direction: column;  /* Stack items vertically */
+    align-items: center;     /* Center items horizontally */
+    gap: 25px;                /* Adjust this value for more or less gap */
+}
+
+.average-score h1 {
+    font-size: 40px;
+    margin: 0;
+    color: #333;
+}
+
+.average-score p {
+    margin: 0;
+    color: #666;
+    text-align: center;
+}
+
+.progress-bars {
+    display: flex;
+    gap: 20px;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(#fdb813 0% 77%, #eee 77% 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.circle span {
+    position: absolute;
+    font-size: 18px;
+    color: #333;
+}
+
+.progress-item p {
+    margin-top: 5px;
+    color: #666;
+    text-align: center;
+}
+.leftbox{
+    position: absolute;
+width: 250px;
+height: 500px;
+left: 160px;
+top: 360px;
+background-color:  #F0F1F3;
+filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+border-radius: 10px;
+color: #000;
+}
+.leftbox h1{
+    font-size: 30px;
+    margin-left: 25px;
+    margin-top: 20px;
+}
+
+
+.scroll_leftbox {
+    margin-top:-20px;
+    background-color:transparent;
+    overflow-y: auto;   /* Enables vertical scroll if content overflows */
+    height: 400px; 
+    width: 240px; 
+    margin-left:2px;    /* Fixed height to show scroll */
+}
+
+/* Fix scrollbar width */
+.scroll_leftbox::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Fix scrollbar thumb color */
+.scroll_leftbox::-webkit-scrollbar-thumb {
+    background: #D9D9D9;
+    border-radius: 4px;
+}
+
+.scroll_leftbox::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+.recent_module{
+    padding:80px 0px;
+    position: relative;
+    background-color: white;
+    border-radius: 10px;
+    border-color: #000;
+    border-style: solid;    
+    border-width: 2px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.recent_module h1{
+   position:absolute;
+    bottom: -40px;
+    left:-45px;
+color:black;
+font-size: 15px;
+white-space: nowrap; 
+}
+
+
+.leftbox_grid {
+    display: grid;
+    grid-template-rows: 1frr;
+    grid-gap: 60px ;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 10px; /* Use margin instead of absolute positioning */
+}
+.topmid{  
+    position: absolute;
+    width: 550px;
+    height: 250px;
+    left: 440px;
+    top: 360px;
+    background-color:  #F0F1F3;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border-radius: 10px;
+    color: #000;
+}
+    
+.topmid h1{
+    font-size: 30px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.scroll_topmid {
+    margin-top: -10px;
+    background-color: transparent;
+    overflow-x: auto;  
+    overflow-y: hidden;      /* Enables horizontal scroll */
+    height: 170px;
+    width: 540px;
+    margin-left: 2px;
+    white-space: nowrap;     /* Prevents items from wrapping to the next line */
+}
+
+/* Fix scrollbar height */
+.scroll_topmid::-webkit-scrollbar {
+    height: 8px;             /* Change width to height for horizontal scroll */
+}
+
+/* Fix scrollbar thumb color */
+.scroll_topmid::-webkit-scrollbar-thumb {
+    background: #D9D9D9;
+    border-radius: 4px;
+}
+
+.scroll_topmid::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.quiz {
+    
+        background-size: 100% 100%;
+        width: 190px; 
+        height: 160px;
+   
+}
+.grid_topmid {
+   
+        display: flex;             /* Use flexbox for horizontal layout */
+        gap: 30px;                 /* Space between items */
+        padding: 5px;
+        top: 5px;
+        left: 45px;
+    
+}
+
+.profile-box {
+    position:absolute;
+    background-color: #F0F1F3;  /* Light gray background for the box */
+    padding: 20px 40px;
+    border-radius: 10px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    width: 470px;
+    height: 190px; /* Adjust width as needed */
+    top: 630px;
+    left:440px;
+    
+}
+
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 35px;
+    
+}
+
+.edit-label {
+    font-size: 16px;
+    color: #000;
+    text-decoration: none;  /* Remove underline */
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.edit-label:hover {
+    color: #4F77E2;  /* Change color on hover */
+}
+
+.value-label {
+    font-size: 16px;
+    color: #000;
+    text-align: right;
+}
+
+
+
+.overall-section {
+    position:absolute;
+    background-color: #F0F1F3;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    top: 360px;
+    text-align: center;
+    height:460px;
+    right: 140px;
+    color:black;
+}
+
+.overall-section h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #000;
+}
+
+.chart-labels {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.color-box {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+@media screen and (max-width: 768px) {
+    /* Ensure .background expands with its content */
+    .background {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        height: auto; /* Let the container expand as needed */
+    }
+
+    /* Center the dashboard title */
+    .modules-txt {
+        position: static;
+        text-align: center;
+        font-size: 25px;
+        margin-bottom: 20px;
+    }
+
+    /* Remove absolute positioning and set a responsive width for each section */
+    .topbox,
+    .leftbox,
+    .topmid,
+    .profile-box,
+    .overall-section {
+        position: static !important;
+        width: 90%;
+        margin: 20px auto;
+        left: auto;
+        top: auto;
+        right: auto;
+        height: auto;
+    }
+
+    /* Optionally adjust inner padding if needed */
+    .topbox,
+    .leftbox,
+    .topmid,
+    .profile-box,
+    .overall-section {
+        padding: 15px;
+    }
+    .topbox {
+        position: relative;
+        width: 90%;            /* Responsive width */
+        height: auto;          /* Let content determine the height */
+        margin: 20px auto;     /* Centered with top/bottom margin */
+        background-color: #F0F1F3;
+        filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+        border-radius: 10px;
+        padding: 15px;         /* Padding for inner spacing */
+height: 400px;
+    
+    }
+    
+    .score-section{
+        width:270px;
+        margin-top: 200px;
+        margin-left: 20px;
+    }
+
+    .progress-bars{}
+    /* Leftbox (Recent Module) adjustments */
+    .leftbox {
+        text-align: center;
+    }
+    
+    .leftbox h1 {
+        font-size: 20px;
+        margin-bottom: 25px;
+    }
+    
+    .scroll_leftbox {
+        width: 100%;
+        max-height: 300px;  /* Adjust max-height as needed */
+        overflow-y: auto;
+    }
+    
+    /* Topmid (Recent Activity) adjustments */
+    .topmid h1 {
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    .scroll_topmid {
+        width: 100%;
+        overflow-x: auto;
+    }
+    
+    .grid_topmid {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .quiz {
+        width: 120px;
+        height: auto;
+    }
+    
+    /* Profile Box adjustments */
+    .profile-box {
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .profile-row {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .edit-label,
+    .value-label {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    
+    /* Overall Section adjustments */
+    .overall-section {
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .overall-section h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .chart-labels {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+}

@@ -1,0 +1,191 @@
+header {
+    height: auto;
+    background-color: #122D64;
+    color: #fff;
+    
+}
+body {
+    
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+nav {
+    display: flex;
+    font-family: Arial, sans-serif;
+    align-items: center;
+   
+}
+.home1, .style1, .modules1, .dashboard1 {
+    color: #C97920;
+}
+nav ul {
+    margin-left: 28%;
+    list-style: none;
+    display: flex;
+    gap: 80px;
+}
+
+.logowl {
+    
+    width: 60px;
+    height: auto;
+    margin-left: 10%;
+}
+.logo {
+    font-family: "Bigelow Rules", serif;
+    
+    font-size: 40px ;
+    
+}
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+
+.search{
+
+    display: none; 
+}
+
+.burger {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+    margin-right: 20px;
+}
+
+.burger div {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+}
+.logo_container{
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    nav ul {
+        z-index: 1001;
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        background-color: #122D64;
+        padding: 20px;
+        border-radius: 8px;
+        
+    }
+
+    nav ul.active {
+        display: flex;
+    }
+
+    nav {
+        position: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo {
+        font-size: 39px;
+        margin-bottom: 1px;
+        margin-left: 10px;
+    }
+
+    .search {
+        display: inline-block; /* Ensures the anchor is only as big as its content */
+        margin-right: 30px;    /* If you need spacing, apply it here */
+        margin-left: 0px; 
+    }
+
+    .burger {
+        display: flex;
+        margin-right: 20px;
+    }
+
+    nav ul li {
+        margin-bottom: 15px;
+    }
+
+    nav ul li:last-child {
+        margin-bottom: 0;
+    }
+
+    nav ul {
+        gap: 20px;
+    }
+
+    .logowl {
+        margin-top: 1px;
+        height: 58px;
+        width: 58px;
+        margin-left: 5px;
+    }
+
+ 
+.search-icon {
+    width: 20px;
+    height: 20px;
+    display: block; /* Makes the image take only its natural dimensions */
+    /* Remove padding-left to avoid extra clickable space */
+}
+
+.burger_and_search{
+    display: flex; 
+    align-items: center;
+}
+.logo_container{
+    display: flex;
+    align-items: center;
+ 
+}
+}
+
+@media (max-width: 1024px) {
+    nav ul {
+        margin-left: 18%;
+        gap: 50px;
+    }
+
+    .logo {
+        font-size: 36px;
+    }
+
+    .logowl {
+        width: 50px;
+        height: auto;
+        margin-left: 13%;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 30px;
+    }
+
+    .logowl {
+        width: 40px;
+        height: auto;
+        margin-left: 5px;
+    }
+
+    nav ul {
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .burger {
+        margin-right: 10px;
+    }
+
+    .search {
+        margin-right: 15px;
+    }
+}

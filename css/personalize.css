@@ -1,0 +1,265 @@
+body {
+    font-family: Arial, sans-serif;
+    
+}
+
+header {
+    height: auto;
+    background-color: #122D64;
+    color: #fff;
+    
+}
+
+
+.image-button {
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    left:60px;
+}
+
+.image-button img {
+    width: 50px; /* Adjust size as needed */
+    border-radius: 5px; /* Optional: Rounded corners */
+}
+.logowl {
+    
+    width: 60px;
+    height: auto;
+    margin-left: 10%;
+}
+.logo {
+    font-family: "Bigelow Rules", serif;
+    
+    font-size: 40px ;
+    
+}
+
+.background{
+    height: 900px;
+    display: flex;
+    justify-content: center;
+    
+    
+    background: linear-gradient(to bottom,#122D64, #82A0DC);
+    color: white;
+}
+.modules-txt {
+    position:absolute;
+    text-align: center;
+    
+    font-size: 30px;
+    margin-top: 30px;
+    
+}
+.levels{
+    position: absolute;
+    width: 392px;
+    height: 476px;
+    left: 20px;
+    top: 233px;
+    background: #F0F1F3;
+    border-radius: 10px;
+    
+    
+}
+.c_styles{
+    position: absolute;
+    width: 392px;
+    height: 476px;
+    left: 443px;
+    top: 233px;
+    background: #F0F1F3;
+    border-radius: 10px;
+}
+.subjects{
+    position: absolute;
+    width: 392px;
+    height: 476px;
+    left: 866px;
+    top: 233px;
+    background: #F0F1F3;
+    border-radius: 10px;
+}
+.levels img{
+    height:50px;
+    width:50px;
+    justify-content: center;
+    position:relative;
+    margin-left:43%;
+    margin-right:43%;
+    top:-25px;
+}
+.numbertwo{
+    height:50px;
+    width:50px;
+    justify-content: center;
+    position:relative;
+    margin-left:43%;
+    margin-right:43%;
+    top:-25px;
+}
+.subjects img{
+    height:50px;
+    width:50px;
+    justify-content: center;
+    position:relative;
+    margin-left:43%;
+    margin-right:43%;
+    top:-25px;
+    
+}
+
+.levels h2{
+    position:relative;
+    font-size: 30px;
+    display: flex; 
+    top: -20px;
+    left: 85px;
+    color: black;
+    
+}
+.levels h3{
+    font-size: 18px;
+    color: black;
+    text-align: center;
+    position: relative;    
+}
+h3:nth-of-type(1) {      /* First <h3> */
+    top: 60px;           /* Move up if needed */
+    left: 0;             /* Adjust horizontally if needed */
+}
+h3:nth-of-type(2) {      /* Second <h3> */
+    top: 135px;          /* Adjust position */
+}
+h3:nth-of-type(3) {      /* Third <h3> */
+    top: 210px;          /* Adjust position */
+}
+.levels button{
+    font-size: 30px;
+    background-color: #122D64;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 45px;
+    cursor: pointer;
+    position: absolute;         /* Make buttons absolute */
+    left: 50%;
+    transform: translateX(-50%);
+}
+.beginner { top: 120px; }        /* Position each button individually */
+.intermediate { top: 235px; }
+.advanced { top: 350px; }
+
+.c_styles h2{
+    position:relative;
+    font-size: 30px;
+    display: flex; 
+    top: -20px;
+    left: 80px;
+    color: black;
+}
+
+.reading{
+    cursor: pointer;
+    border:none;
+    background-color: transparent;
+    margin-left:100px;
+}
+
+.reading img{
+    height:160px;
+    width:180px;
+    
+    position:relative;
+    
+ 
+    top:-10px;
+}
+
+.watching {    
+    cursor: pointer;
+    border:none;
+    background-color: transparent;
+    margin-left:100px;
+    
+    top:-30px;
+   
+}
+.watching img{
+    height:160px;
+    width:180px;
+    justify-content: center;
+    position:relative;
+    top:-30px;
+
+}
+
+.subjects h2{
+    position:relative;
+    font-size: 30px;
+    display: flex; 
+    top: -20px;
+    left: 50px;
+    color: black;
+}
+
+.checkbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;                          /* Space between items */
+             /* Light gray background */
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 200px;     
+    margin-left: 100px;
+    margin-top:-20px;
+    
+}
+
+.checkbox-list label {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 25px;
+    color: #000;
+}
+
+.checkbox-list input[type="checkbox"] {
+    appearance: none;                   /* Remove default checkbox */
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000;
+    border-radius: 4px;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+}
+
+.checkbox-list input[type="checkbox"]:checked {
+    background-color: black;            /* Black background when checked */
+    color: white;
+}
+
+.checkbox-list input[type="checkbox"]:checked::before {
+    content: '✔';
+    color: white;
+    font-size: 14px;
+}
+
+.skip {
+    position:absolute;
+bottom: 15px;
+right: 15px;
+background-color: transparent;
+font-size: 15px;
+color:black;
+background: none;  /* Removes background color */
+border: none;      /* Removes border/outline */
+outline: none;     /* Removes outline when focused */
+padding: 5px 10px; /* Adjust padding if needed */
+cursor: pointer;   
+}

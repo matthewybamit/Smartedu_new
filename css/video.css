@@ -1,0 +1,35 @@
+.container {
+    background: linear-gradient(to bottom,#122D64, #82A0DC);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.title {
+    margin-top: 3%;
+    color: white;
+    font-size: 25px;
+    font-family: "Manrope", sans-serif;
+    font-weight: bold;
+    margin-bottom: 2%;
+}
+.video-container {
+    height: 600px;
+    background-color: #D9D9D9;
+    width: 70%;
+    border-radius: 15px;
+    margin-bottom: 2%;
+}
+.container2{
+    width: 60%;
+    margin-bottom: 3%;
+}
+.abt {
+    font-size: 30px;
+    font-family: "Manrope", sans-serif;
+    font-weight: bold;
+}
+.parag {
+    font-size: 15px;
+    font-family: "Manrope", sans-serif;;
+}

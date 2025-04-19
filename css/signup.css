@@ -1,0 +1,306 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.container {
+    display: flex;
+    width: 900px;
+    height: 550px;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Left Section */
+.right-section {
+    background-color: #C97920;
+    
+    color: white;
+    width: 55%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    text-align: center;
+    
+}
+
+.right-section h1 {
+    font-family: "Bigelow Rules", serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 84px;
+    margin-bottom: 0%;
+    margin-top: 0%;
+    
+}
+
+.owlogo {
+height: 300px;
+
+overflow: hidden;
+
+}
+.owl {
+    margin-top: -15%;
+    
+    width: 450px;
+    height: auto;
+    object-fit: cover;
+   
+   
+}
+
+
+.left-section {
+    width: 50%;
+    padding-top: 20px;
+    margin-left: 40px;
+  
+   
+    text-align: center;
+}
+
+.left-section h2 {
+    color: #C97920;
+    font-size: 22px;
+    margin-right: 6%;
+
+    
+}
+
+
+
+.owlorange {
+    display: none;
+}
+
+
+/* Form Styles */
+.row {
+    
+    margin-left: 2.5%;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 14%;
+    
+   
+}
+
+
+
+#age{
+    margin-left: 40%;
+    width: 40%;
+}
+.age {
+    margin-left: 42%;
+}
+#lname {
+    width: 200px;
+}
+#fname {
+    width: 50%;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 6%;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input {
+    width: 75%;
+    padding: 9px;
+    margin-left: 5%;
+    margin-bottom: 12px;
+    background-color: #F0F1F3;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.sign-in {
+    margin-left: 25%;
+    justify-content: center;
+    width: 40%;
+    padding: 10px;
+    background-color: #C97920;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 5%;
+    margin-bottom: 3%;
+}
+
+.sign-in:hover {
+    background-color: #9b5d16;
+}
+
+
+.signup-text {
+    margin-right: 40px;
+    font-size: 14px;
+}
+
+.signup-text a {
+    color: #C97920;
+    text-decoration: none;
+    font-weight: bold;
+}
+* {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Input Field Focus Effect */
+input:focus {
+    border-color: #122D64;
+    background-color: #e6eaf1;
+    transform: scale(1.05);
+}
+
+/* Button Hover Effects */
+.sign-in, .google-signin {
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.sign-in:hover, .google-signin:hover {
+    transform: scale(1.1);
+}
+
+/* Section Fade-in Effect */
+.container {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+/* Link Hover Effect */
+.signup-text a {
+    transition: color 0.3s ease-in-out;
+}
+.signup-text a:hover {
+    color: #ff7f50;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        background: none;      
+        box-shadow: none;     
+        border-radius: 0;     
+        width: 100%;        
+        height: 100%;       
+
+      }
+      .right-section {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        z-index: 1000;     
+        background-color: #122d64;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 5px;
+    }
+    
+    .owl {
+        display: none;
+    }
+    
+
+    .owlorange {
+        display: block;
+    }
+    
+    .owlogo {
+        display: flex;
+        height: 60px;
+        width:60px;
+    }
+    
+
+    .right-section .logo {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        margin-left: 0px;   
+        margin-top: 1px;   
+        flex-direction: row;
+    }
+    
+ 
+    .right-section .logo .owlogo {
+        order: 0;
+    }
+    
+    .right-section .logo h1 {
+        order: 1;
+        margin: 0;
+        font-size: 40px;
+        color: inherit;
+        margin-left: 10px;
+       
+    }
+    
+
+    .owlorange img {
+        width: 40px;
+        height: 50px;
+        object-fit: contain;
+    }
+    
+    
+
+      .left-section {
+        width: 100%;
+        margin-left: 30px;
+        margin-top: 40px;
+        text-align: center;
+    }
+    
+    .left-section h2 {
+        margin-top: 40px;
+        text-align: center;     
+        text-indent: 20px;      
+        color: #122d64;      
+      }
+      .sign-in {
+        background-color: #122D64;
+      }
+      .signup-text a{
+        color: #122D64;
+      }
+}
