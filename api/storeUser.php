@@ -2,19 +2,8 @@
 session_start();
 header('Content-Type: application/json');
 
-// Database connection parameters
-$host = 'localhost';
-$dbname = 'smartedu';  // Your database name
-$dbUsername = 'root';   // Adjust according to your MySQL credentials
-$dbPassword = '';       // Adjust according to your MySQL credentials
-
-// Create the database connection
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $dbUsername, $dbPassword);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
-}
+// Include database connection
+include '../php_functions/db_connection.php';
 
 // Read the JSON data from the POST request
 $data = json_decode(file_get_contents('php://input'), true);
@@ -52,17 +41,17 @@ $dummyPassword = password_hash("OAUTH_USER", PASSWORD_DEFAULT);
 
 try {
     // Check if the user already exists
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
         // If user exists, update the information (optional)
-        $stmt = $conn->prepare("UPDATE users SET first_name = ?, last_name = ?, username = ?, age = ? WHERE email = ?");
+        $stmt = $pdo->prepare("UPDATE users SET first_name = ?, last_name = ?, username = ?, age = ? WHERE email = ?");
         $stmt->execute([$firstName, $lastName, $usernameDerived, $age, $email]);
     } else {
         // Insert a new user record
-        $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, username, password, age) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, email, username, password, age) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->execute([$firstName, $lastName, $email, $usernameDerived, $dummyPassword, $age]);
     }
 
@@ -75,6 +64,40 @@ try {
 
     echo json_encode(['status' => 'success', 'message' => 'User stored successfully']);
 } catch (PDOException $e) {
-    echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    // Check if the error is related to the users table not existing
+    if (strpos($e->getMessage(), "Table 'lumin_admin.users' doesn't exist") !== false) {
+        // Create the users table
+        try {
+            $createTable = "CREATE TABLE users (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                first_name VARCHAR(50) NOT NULL,
+                last_name VARCHAR(50),
+                email VARCHAR(100) UNIQUE NOT NULL,
+                username VARCHAR(50) UNIQUE NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                age INT,
+                profile_image VARCHAR(255),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )";
+            $pdo->exec($createTable);
+            
+            // Try inserting the user again
+            $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, email, username, password, age) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$firstName, $lastName, $email, $usernameDerived, $dummyPassword, $age]);
+            
+            // Set session variables
+            $_SESSION['user_email'] = $email;
+            $_SESSION['user_displayName'] = $displayName;
+            $_SESSION['user_username'] = $usernameDerived;
+            $_SESSION['user_age'] = $age;
+            $_SESSION['user_profileImage'] = $photoURL;
+            
+            echo json_encode(['status' => 'success', 'message' => 'User table created and user stored successfully']);
+        } catch (PDOException $createError) {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to create users table: ' . $createError->getMessage()]);
+        }
+    } else {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
 }
 ?>

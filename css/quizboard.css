@@ -1,268 +1,275 @@
-body {
+:root {
+    --color-primary: #122d64;
+    --color-secondary: #82a0dc;
+    --color-accent: #c97920;
+    --color-bg-start: #122d64;
+    --color-bg-end: #82a0dc;
+    --color-surface: #ffffff;
+    --color-text: #333333;
+    --font-title: 'Bigelow Rules', cursive;
+    --font-base: 'Manrope', Arial, sans-serif;
+    --border-radius: 0.5rem;
+    --transition-speed: 0.3s;
+  }
+  
+  /* Reset & Box Sizing */
+  *, *::before, *::after {
+    box-sizing: border-box;
     margin: 0;
-    font-family: 'Bigelow Rules', sans-serif;
-    background: linear-gradient(to bottom,#122D64, #82A0DC);
-    color: white;
-    text-align: center;
+    padding: 0;
+  }
+  html, body {
+    height: 100%;
+    width: 100%;
+  }
+  
+  /* Body and Background */
+  body {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #0a1f50;
-    padding: 10px 150px;
-}
-
-.nav-left {
-    display: flex;
-    align-items: center;
-}
-
-.logo {
-    height: 40px;
-    font-size: 35px;
-}
-
-.logowl {
-    width: 60px;
-    height: auto;
-    margin-left: 10%;
-}
-
-.brand-name {
-    height: 30px;
-    margin-left: 10px;
-}
-
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 120px;
-    margin-right: 10px;
-    padding-left: 50px;
-}
-
-.nav-right a {
-    font-family: 'Manrope', sans-serif;
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-    transition: color 0.3s ease-in-out;
-}
-
-.nav-right a:hover {
-    color: #c4701d;
-}
-
-.container {
-    font-family: 'Manrope', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    padding: 20px;
-    padding-bottom: 2050px;
-    overflow: auto;
-    box-sizing: border-box;
-}
-
-.quiz-card {
-    background-color: #0c2a6a;
-    padding: 20px;
-    padding-bottom: 1650px;
-    max-width: 1650px;
-    width: 100%;
-    border-radius: 10px;
-    box-shadow: none;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-sizing: border-box;
-}
-
-.module {
-    position: absolute;
-    top: 150px;
-    left: 180px;
-    font-family: 'Manrope', sans-serif;
-    font-size: 28px;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: color 0.3s ease-in-out;
-}
-
-.module:hover {
-    color: #c4701d;
-}
-
-.pointer {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.quiz-header {
-    position: absolute;
-    top: 250px;
-    left: 50%;
-    transform: translateX(-50%);
+    background: linear-gradient(
+      to bottom,
+      var(--color-bg-start),
+      var(--color-bg-end)
+    );
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    color: var(--color-surface);
     text-align: center;
-    z-index: 2;
-}
-
-.quiz-header h1 {
-    font-size: 54px;
-    color: white;
-    margin-bottom: 20px;
-}
-
-.congrats-section h2 {
-    font-size: 38px;
-    color: #ff8c00;
-    margin-bottom: 10px;
-}
-
-.congrats-section p {
-    font-size: 28px;
-    color: white;
-    margin-bottom: 20px;
-}
-
-.quiz-badge {
-    margin-top: 100px;
-}
-
-.badge-image {
-    width: 200px;
-    height: auto;
-}
-
-.quiz-stats {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 50px;
-    padding: 20px;
-    border-radius: 15px;
-    margin-top: 150px;
-}
-
-.stat {
-    background-color: #c4701d;
-    color: white;
-    padding: 20px;
-    border-radius: 15px;
-    font-size: 18px;
+    font-family: var(--font-base);
+  }
+  
+  
+  /* Main Container */
+  .container {
     flex: 1;
-    text-align: center;
-    font-family: 'Manrope', sans-serif;
-    cursor: default;
-    margin-bottom: 100;
-}
-
-.stat h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: white;
-}
-
-.stat p {
-    font-size: 16px;
-    color: white;
-}
-
-table {
-    width: 100%;
-    max-width: 1200px;
-    border-collapse: collapse;
-    background-color: #cc762e;
-    color: white;
-    margin: 250px auto 0 auto;
-    font-family: 'Manrope', sans-serif;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-th, td {
-    border: 1px solid white;
-    padding: 31px;
-    text-align: center;
-}
-
-th {
-    background-color: #b5651d;
-}
-
-
-
-.recommendations-container {
-    width: 80%;
-    margin: 130px auto;
-    text-align: left;
-}
-
-.recommend-title {
-    color: black;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.recommendations {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  /* Module Back Link */
+  .module {
+    align-self: flex-start;
+    margin-bottom: 1rem;
+  }
+  .module a {
+    font-family: var(--font-base);
+    font-size: 1.1rem;
+    color: var(--color-surface);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color var(--transition-speed);
+  }
+  .module a:hover {
+    color: var(--color-accent);
+  }
+  
+  /* Header */
+  .quiz-header h1 {
+    font-family: var(--font-title);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .congrats-section h2 {
+    font-size: 2rem;
+    color: var(--color-accent);
+    margin-bottom: 0.25rem;
+  }
+  .congrats-section p {
+    font-size: 1.25rem;
+    margin: 0.25rem 0;
+  }
+  
+  /* Badge */
+  .quiz-badge {
+    margin: 1rem 0;
+  }
+  .badge-image {
+    width: 150px;
+    height: auto;
+  }
+  
+  /* Stats */
+  .quiz-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 1rem;
+    width: 100%;
+    margin: 2rem 0;
+  }
+  .stat {
+    background-color: var(--color-accent);
+    color: var(--color-surface);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    flex: 1 1 150px;
+    text-align: center;
+    font-family: var(--font-base);
+  }
+  .stat h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .stat p {
+    font-size: 1rem;
+  }
+  
+  /* Insights Table */
+  table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+  }
+  th, td {
+    padding: 1rem;
+    text-align: center;
+    background-color: var(--color-accent);
+    color: var(--color-surface);
+    font-family: var(--font-base);
+  }
+  th {
+    background-color: var(--color-secondary);
+  }
+  tr + tr td {
+    background-color: var(--color-accent);
+  }
+  
+  /* Recommendations */
+  .recommendations-container {
+    width: 100%;
+    margin: 2rem 0;
+  }
+  .recommend-title {
+    font-size: 1.75rem;
+    text-align: left;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+  .recommendations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
     justify-content: space-between;
-    gap: 15px;
-    margin-top: 120px;
-}
-
-.card {
-    background-color: white;
-    color: black;
-    padding: 20px;
-    width: 220px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  .card {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    flex: 1 1 calc(25% - 1rem);
+    max-width: calc(25% - 1rem);
     position: relative;
     text-align: center;
-}
-
-.star {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .card .star {
     position: absolute;
-    top: -30px;
-    left: -30px;
-    font-size: 44px;
-    color: #c4701d;
-}
-
-.view-btn {
-    background-color: #c4701d;
-    color: white;
+    top: -1rem;
+    left: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--color-accent);
+  }
+  .card h3 {
+    margin-top: 1.5rem;
+    font-size: 1.25rem;
+  }
+  .card p {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+  }
+  .view-btn {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-accent);
+    color: var(--color-surface);
     border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-.view-btn:hover {
-    background-color: #a35a17;
-}
-
-.view-more {
-    color: black;
-    font-size: 16px;
-    margin: 80px auto 0; 
+    transition: background-color var(--transition-speed);
+  }
+  .view-btn:hover {
+    background-color: var(--color-secondary);
+  }
+  .view-more {
+    display: block;
+    margin: 2rem auto;
+    font-size: 1rem;
+    color: var(--color-text);
     cursor: pointer;
-    display: block; 
-    text-align: center; 
-}
-
+    text-align: center;
+    transition: color var(--transition-speed);
+  }
+  .view-more:hover {
+    color: var(--color-accent);
+  }
+  
+  /* Action Buttons */
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem 0;
+  }
+  .continue-btn, .dashboard-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-family: var(--font-base);
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+  }
+  .continue-btn {
+    background-color: var(--color-accent);
+    color: var(--color-surface);
+  }
+  .dashboard-btn {
+    background-color: var(--color-secondary);
+    color: var(--color-surface);
+  }
+  .continue-btn:hover {
+    background-color: var(--color-secondary);
+  }
+  .dashboard-btn:hover {
+    background-color: var(--color-accent);
+  }
+  
+  /* Responsive Breakpoints */
+  @media (max-width: 900px) {
+    .card {
+      flex: 1 1 calc(50% - 1rem);
+      max-width: calc(50% - 1rem);
+    }
+  }
+  @media (max-width: 600px) {
+    .recommendations {
+      flex-direction: column;
+      align-items: center;
+    }
+    .card {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem;
+    }
+    .nav-right {
+      margin-top: 0.5rem;
+    }
+  }
+  

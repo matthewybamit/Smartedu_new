@@ -11,12 +11,20 @@ if (!isset($_SESSION['email']) && !isset($_SESSION['user_email'])) {
 $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
 // Query the database to get the user's age using the email stored in session
 $userAge = null;
-$query = $conn->prepare("SELECT age FROM users WHERE email = :email");
-$query->bindParam(':email', $_SESSION['email']);
-$query->execute();
-if ($query->rowCount() > 0) {
-    $result = $query->fetch(PDO::FETCH_ASSOC);
-    $userAge = $result['age'];
+$email = isset($_SESSION['email']) ? $_SESSION['email'] : (isset($_SESSION['user_email']) ? $_SESSION['user_email'] : '');
+if (!empty($email)) {
+    try {
+        $query = $pdo->prepare("SELECT age FROM users WHERE email = :email");
+        $query->bindParam(':email', $email);
+        $query->execute();
+        if ($query->rowCount() > 0) {
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            $userAge = $result['age'];
+        }
+    } catch (PDOException $e) {
+        // Error handling - just proceed with null age value
+        error_log("Database error in dashboard: " . $e->getMessage());
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -142,14 +150,15 @@ if ($query->rowCount() > 0) {
         </div>
         <div class="profile-row">
             <a href="#" class="edit-label">Edit Email</a>
-            <span class="value-label" id="displayEmail"><?php echo htmlspecialchars($_SESSION['email'] ?? 'Email'); ?></span>
+            <span class="value-label" id="displayEmail"><?php echo htmlspecialchars($_SESSION['email'] ?? ($_SESSION['user_email'] ?? 'Email')); ?></span>
         </div>
         <div class="profile-row">
             <a href="#" class="edit-label">Edit Username</a>
             <span class="value-label" id="displayUsername">
                 <?php 
                     // Assuming you want to display the email prefix as the username
-                    echo htmlspecialchars(isset($_SESSION['email']) ? explode('@', $_SESSION['email'])[0] : 'Username'); 
+                    $email = isset($_SESSION['email']) ? $_SESSION['email'] : (isset($_SESSION['user_email']) ? $_SESSION['user_email'] : '');
+                    echo htmlspecialchars(!empty($email) ? explode('@', $email)[0] : 'Username'); 
                 ?>
             </span>
         </div>

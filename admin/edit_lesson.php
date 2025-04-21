@@ -68,13 +68,13 @@ try {
                 $coverPhoto = $lessonData['cover_photo'];
                 if (isset($_FILES['cover_photo']) && $_FILES['cover_photo']['error'] === UPLOAD_ERR_OK) {
                     // Create directory if it doesn't exist
-                    if (!is_dir('uploads/covers/')) {
-                        mkdir('uploads/covers/', 0755, true);
+                    if (!is_dir('admin/uploads/covers/')) {
+                        mkdir('admin/uploads/covers/', 0755, true);
                     }
                     
                     // Generate unique filename
                     $fileName = uniqid() . '_' . basename($_FILES['cover_photo']['name']);
-                    $targetPath = 'uploads/covers/' . $fileName;
+                    $targetPath = 'admin/uploads/covers/' . $fileName;
                     
                     // Upload file
                     if (move_uploaded_file($_FILES['cover_photo']['tmp_name'], $targetPath)) {

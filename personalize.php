@@ -2,9 +2,11 @@
 session_start();
 
 $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
-if (isset($_GET['subject'])) {
-    $_SESSION['preferred_subject'] = $_GET['subject'];
-}
+
+// Get the values from the URL (query string)
+$subject = $_GET['subject'] ?? null;
+$level = $_GET['level'] ?? null;
+$style = $_GET['style'] ?? null;
 ?>
 
 <!DOCTYPE html>

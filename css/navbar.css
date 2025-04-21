@@ -67,7 +67,7 @@ nav ul li a {
 .logo_container{
     display: flex;
     align-items: center;
-    margin-left: 150px;
+    margin-left: 0px;
 }
 
 @media (max-width: 768px) {

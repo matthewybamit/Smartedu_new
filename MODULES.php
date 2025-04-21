@@ -16,6 +16,7 @@ $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/navbar.css">
     <script src="js/module.js"></script>
+    <script defer src="js/moduleHandler.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
@@ -68,12 +69,10 @@ $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
 
             <div class="content">
                 <div class="grid-content">
-                    <a href="read.php?">
-                        <div class="quiz-content">
-                            <img src="https://m.media-amazon.com/images/I/618JU+EmlBL._AC_UF1000,1000_QL80_.jpg" alt="English Cover" class="quiz-cover" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
-                            <h1>English</h1>
-                        </div>
-                    </a>
+                    <div class="quiz-content">
+                        <img src="https://m.media-amazon.com/images/I/618JU+EmlBL._AC_UF1000,1000_QL80_.jpg" alt="English Cover" class="quiz-cover" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+                        <h1>English</h1>
+                    </div>
                     <div class="quiz-content">
                         <h1>Mathematics</h1>
                     </div>
