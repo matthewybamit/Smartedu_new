@@ -1,18 +1,12 @@
 <?php
-include_once 'php_functions/module_function.php';  // Include the function to fetch title and description
-include_once 'php_functions/db_connection.php';  // Include the database connection file
-
 session_start();
 
 $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
 
-
-// Fetch both title and description
-$moduleDetails = getEnglishModuleDetails($conn);
-
-// Extract title and description from the result
-$title = $moduleDetails['title'];
-$description = $moduleDetails['description'];
+// Get the values from the URL (query string)
+$subject = $_GET['subject'] ?? null;
+$level = $_GET['level'] ?? null;
+$style = $_GET['style'] ?? null;
 ?>
 
 
@@ -66,68 +60,41 @@ $description = $moduleDetails['description'];
 </header>
 
 
-    <main>
+<main>
+    <div class="background">
+        <div class="readFrame">
 
-        <div class="background">
-            <div class="readFrame">
-                <div class="chapters">
-                    <H1>Chapters</H1>
-                    <div class="scroll-chapters">
-                        <div class="grid-grid">
-                            <div class="grid-num">
-                                <h2>01</h2>
-                                <h2>02</h2>
-                                <h2>03</h2>
-                                <h2>04</h2>
-                                <h2>05</h2>
-                                <h2>06</h2>
-                                <h2>07</h2>
-                                <h2>08</h2>
-                                <h2>09</h2>
-                            </div>
-                            <div class="grid-title">
-                                <h3><?php echo htmlspecialchars($title); ?></h3>
-                                <h3>Title</h3>
-                                <h3>Title</h3>
-                                <h3>Title</h3>
-                                <h3>Title</h3>
-                                <h3>Title</h3>
-                                <h3>Title</h3>
-                                <h3>Title</h3>
-                                <h3>Title</h3>
-                            </div>
-                        </div>
-                    </div>
-
+            <!-- Chapters Sidebar -->
+            <div class="chapters">
+                
+                <h1>Chapters</h1>
+                <div class="scroll-chapters">
+                    <div id="chapters-grid" class="grid-grid"></div>
                 </div>
-                <div class="readcontent">
-
-                    <button class="save">Save</button>
-                    <button class="finish">Finished</button>
-                    <button class="start" onclick="location.href='quizone.php';">Start Quiz</button>
-
-                    <div class="scroll-read">
-                        <h2>01</h2>
-                        <h1><?php echo htmlspecialchars($title); ?></h1> <!-- Display the title -->
-
-                        <!-- Display the description fetched from the database -->
-                        <p><?php echo htmlspecialchars($description); ?></p> <!-- Display the description -->
-                    </div>
-                </div>
-
-                <div class="content">
-                    <h1></h1>
-                    <h2></h2>
-                    <h3></h3>
-
-                </div>
-
-
-
-
             </div>
+
+            <!-- Lesson Content Area -->
+            <div class="readcontent">
+                <button class="save">Save</button>
+                <button class="finish">Finished</button>
+                <button class="start" onclick="location.href='quizone.php';">Start Quiz</button>
+
+                <!-- Title and Number -->
+                <div id="lesson-title" class="scroll-read">
+                    <h2></h2> <!-- For Chapter Number -->
+                    <h1></h1> <!-- For Chapter Title -->
+                    <p></p>
+                </div>
+
+                <!-- Lesson Description -->
+                <div id="lesson-description" class="content">
+                    <p></p>
+                </div>
+            </div>
+
         </div>
-    </main>
+    </div>
+</main>
     <footer>
 
     </footer>
@@ -136,13 +103,85 @@ $description = $moduleDetails['description'];
 
 
     <script>
+
         // Toggle the visibility of the menu
         const burger = document.getElementById('burger');
-        const navMenu = document.getElementById('nav-menu');
+    const navMenu = document.getElementById('nav-menu');
 
-        burger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
+    burger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
+
+    // Get PHP session variables
+    const subject = '<?php echo $subject; ?>';
+    const level = '<?php echo $level; ?>';
+
+    // Fetch lessons from the server
+    async function fetchLessons() {
+        try {
+            const response = await fetch('php_functions/fetch_lessons.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ subject, level })
+            });
+
+            const lessons = await response.json();
+
+            if (lessons.length > 0) {
+                populateChaptersGrid(lessons);
+                displayLessonContent(lessons[0], 0); // Display first lesson by default
+            } else {
+                console.warn('No lessons found.');
+            }
+
+        } catch (error) {
+            console.error('Error fetching lessons:', error);
+        }
+    }
+
+    // Populate the chapters sidebar
+    function populateChaptersGrid(lessons) {
+        const chaptersGrid = document.getElementById('chapters-grid');
+        chaptersGrid.innerHTML = ''; // Clear existing
+
+        lessons.forEach((lesson, index) => {
+            const chapterNumber = String(index + 1).padStart(2, '0');
+            const chapterTitle = lesson.title;
+
+            const chapterDiv = document.createElement('div');
+            chapterDiv.classList.add('chapter');
+            chapterDiv.innerHTML = `
+                <h2>${chapterNumber}</h2>
+                <h3>${chapterTitle}</h3>
+            `;
+
+            chapterDiv.addEventListener('click', () => {
+                displayLessonContent(lesson, index);
+            });
+
+            chaptersGrid.appendChild(chapterDiv);
         });
+    }
+
+    // Display the selected lesson
+    function displayLessonContent(lesson, index = 0) {
+        const lessonTitle = document.getElementById('lesson-title');
+        const lessonDescription = document.getElementById('lesson-description');
+
+        const chapterNumber = String(index + 1).padStart(2, '0');
+
+        // Update scroll-read
+        lessonTitle.querySelector('h2').textContent = chapterNumber;
+        lessonTitle.querySelector('h1').textContent = lesson.title;
+
+        // Update content
+        lessonTitle.querySelector('p').textContent = lesson.description;
+    }
+
+    // Initial fetch
+    fetchLessons();
     </script>
 
 </body>

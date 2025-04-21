@@ -14,6 +14,7 @@ $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/footer.css">
     <script defer src="js/carouselvid.js"></script>
+    <script src="js/lesson.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
@@ -103,7 +104,7 @@ $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
         </div>
 
         <div class="books-container">
-            <div class="booktitle">BOOKS</div>
+            <div class="booktitle">MODULES</div>
             <div class="books-grid">
             <div class="book-item">
                 <img src="https://m.media-amazon.com/images/I/81zwMtN5ziL._AC_UF1000,1000_QL80_.jpg" alt="History Book Cover" class="book-cover" style="width: 150px; height: 200px;">

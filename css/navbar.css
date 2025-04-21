@@ -21,7 +21,7 @@ nav {
     color: #C97920;
 }
 nav ul {
-    margin-left: 28%;
+    margin-left: 40%;
     list-style: none;
     display: flex;
     gap: 80px;
@@ -67,6 +67,7 @@ nav ul li a {
 .logo_container{
     display: flex;
     align-items: center;
+    margin-left: 150px;
 }
 
 @media (max-width: 768px) {

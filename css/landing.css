@@ -23,20 +23,20 @@ height: auto;
 .hero-text {
     font-family: "Manrope", sans-serif;
     font-optical-sizing: auto;
-    margin-top: 7%;
+    margin-top: 5%;
     max-width: 77%;
-    margin-left: 40px;
+    margin-left: 150px;
 }
 .wt {
    
     
     margin-left: 7px;
-    font-size: 24px;
+    font-size: 40px;
     font-weight: bold;
 }
 .se {
     margin-top: -10px;
-    font-size: 95px;
+    font-size: 150px;
     font-weight: bold;
     
 }
@@ -357,6 +357,9 @@ p {
 .paragraph {
     text-align: justify;
 }
+.hero-image{
+    margin-left: 10px;
+}
 
 @media screen and (max-width: 768px) {
 .owlmascot {
@@ -381,7 +384,7 @@ body {
 }
 .hero-text {
     font-family: "Manrope", sans-serif;
-margin-top: 10%;
+margin-top: 5%;
 margin-left: 20px;
 
 }
@@ -401,7 +404,7 @@ margin-left: 20px;
     font-weight: bold;
 }
 .parag1 {
-    font-size: 10px;
+    font-size: 20px;
     
     margin-right: 23px;
 }

@@ -2,6 +2,9 @@
 session_start();
 
 $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
+if (isset($_GET['subject'])) {
+    $_SESSION['preferred_subject'] = $_GET['subject'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -74,33 +77,6 @@ $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
                 <button class="watching"><img src="photos/watching.png"  alt="button image"></button>
                 <button class="reading"><img src="photos/reading.png"  alt="button image"></button>
             </div>
-            <div class="subjects">
-                <img src="photos/3.png"  class="a3">
-                <h2>SELECT SUBJECT(S)</h2>
-                <div class="checkbox-list">
-                    <label>
-                        <input type="checkbox" >
-                        <span>Art</span>
-                    </label>
-                    <label>
-                        <input type="checkbox" >
-                        <span>English</span>
-                    </label>
-                    <label>
-                        <input type="checkbox" >
-                        <span>Filipino</span>
-                    </label>
-                    <label>
-                        <input type="checkbox" >
-                        <span>Math</span>
-                    </label>
-                    <label>
-                        <input type="checkbox" >
-                        <span>Science</span>
-                    </label>
-                </div>
-                <button class="skip">SKIP</button>
-            </div>
         </div>
    
     <footer>
@@ -116,13 +92,48 @@ $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
 
     
     <script>
-    // Toggle the visibility of the menu
-    const burger = document.getElementById('burger');
+     // Toggle burger menu
+     const burger = document.getElementById('burger');
     const navMenu = document.getElementById('nav-menu');
-
     burger.addEventListener('click', () => {
         navMenu.classList.toggle('active');
     });
+
+    let selectedLevel = "";
+
+    // Get the subject from current page URL
+    const subject = new URLSearchParams(window.location.search).get('subject') || "default";
+
+    // Level buttons
+    document.querySelector(".beginner").addEventListener("click", () => {
+        selectedLevel = "Beginner";
+    });
+
+    document.querySelector(".intermediate").addEventListener("click", () => {
+        selectedLevel = "Intermediate";
+    });
+
+    document.querySelector(".advanced").addEventListener("click", () => {
+        selectedLevel = "Advanced";
+    });
+
+    // Style buttons
+    document.querySelector(".reading").addEventListener("click", () => {
+        if (!selectedLevel) {
+            alert("Please select a level first.");
+            return;
+        }
+        window.location.href = `read.php?subject=${encodeURIComponent(subject)}&level=${encodeURIComponent(selectedLevel)}&style=reading&chapter=1`;
+    });
+
+    document.querySelector(".watching").addEventListener("click", () => {
+        if (!selectedLevel) {
+            alert("Please select a level first.");
+            return;
+        }
+        window.location.href = `video.php?subject=${encodeURIComponent(subject)}&level=${encodeURIComponent(selectedLevel)}&style=video&chapter=1`;
+    });
+
 </script>
 
 </body>
