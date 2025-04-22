@@ -405,10 +405,44 @@ $questionsJSON = json_encode($quizQuestions);
     
     // Finish the quiz and redirect
     function finishQuiz() {
-        // In a full implementation, you would save the quiz results to the database here
-        
-        // Redirect to dashboard
-        window.location.href = 'quizboard.php';
+        let score = 0;
+        userAnswers.forEach((answer, index) => {
+            if (answer === quizQuestions[index].correct) {
+                score++;
+            }
+        });
+
+        // Save quiz results to the database via AJAX
+        const quizData = {
+            score: score,
+            total: quizQuestions.length,
+            source: '<?php echo $source; ?>',
+            subject: '<?php echo $subject; ?>',
+            content_id: <?php echo $contentId; ?>,
+            quiz_id: <?php echo isset($quizId) ? $quizId : 0; ?>
+        };
+
+        fetch('php_functions/save_quiz_result.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(quizData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Quiz saved:', data);
+            window.location.href = 'quizboard_kmeans.php?score=' + score + 
+                                '&total=' + quizQuestions.length + 
+                                '&source=' + quizData.source + 
+                                '&subject=' + encodeURIComponent(quizData.subject) + 
+                                '&id=' + quizData.content_id;
+        })
+        .catch(error => {
+            console.error('Error saving quiz:', error);
+            window.location.href = 'quizboard_kmeans.php?score=' + score + 
+                                '&total=' + quizQuestions.length;
+        });
     }
     
     // Start the quiz

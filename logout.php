@@ -1,22 +1,41 @@
 <?php
 session_start();
-
-// Clear all session variables
-$_SESSION = array();
-
-// If the session uses cookies, clear the session cookie
-if (ini_get("session.use_cookies")) {
-    $params = session_get_cookie_params();
-    setcookie(session_name(), '', time() - 42000,
-        $params["path"], $params["domain"],
-        $params["secure"], $params["httponly"]
-    );
-}
-
-// Destroy the session
 session_destroy();
-
-// Redirect to the login page
-header("Location: login.php");
-exit;
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Logging Out</title>
+    <script type="module">
+        import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyCpgVuo3sAsdbdVIZ1W6X54CY7DrvvX5hA",
+            authDomain: "compaq-2f7b9.firebaseapp.com",
+            projectId: "compaq-2f7b9",
+            storageBucket: "compaq-2f7b9.appspot.com",
+            messagingSenderId: "938797418930",
+            appId: "1:938797418930:web:d7400d0f460b4c9038bcab"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        // Sign out from Firebase
+        signOut(auth).then(() => {
+            console.log("Signed out successfully");
+            // Redirect after signout
+            window.location.href = "login.php";
+        }).catch((error) => {
+            console.error("Sign out error:", error);
+            // Redirect anyway
+            window.location.href = "login.php";
+        });
+    </script>
+</head>
+<body>
+    <p>Logging you out...</p>
+</body>
+</html>

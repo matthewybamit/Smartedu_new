@@ -41,3 +41,34 @@ fetch('php_functions/get_subjects.php')
             });
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set background colors for quiz content elements
+        const quizContents = document.querySelectorAll('.quiz-content');
+        const colors = [
+            '#ff8800', // Orange
+            '#4285F4', // Blue
+            '#34A853', // Green
+            '#EA4335', // Red
+            '#FBBC05', // Yellow
+            '#8E44AD'  // Purple
+        ];
+        
+        // Apply different background colors to each quiz content
+        quizContents.forEach((content, index) => {
+            const colorIndex = index % colors.length;
+            content.style.backgroundColor = colors[colorIndex];
+            
+            // Add hover effect
+            content.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+                this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.2)';
+            });
+            
+            content.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = 'none';
+            });
+        });
+    });
+    
