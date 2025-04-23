@@ -248,28 +248,198 @@
   }
   
   /* Responsive Breakpoints */
-  @media (max-width: 900px) {
-    .card {
-      flex: 1 1 calc(50% - 1rem);
-      max-width: calc(50% - 1rem);
-    }
+
+/* Enhanced Mobile View - For screens 768px and smaller */
+/* Enhanced Mobile View - For screens 768px and smaller */
+@media (max-width: 768px) {
+  /* Body and container adjustments */
+  body {
+    background: linear-gradient(to top, #ffffff, var(--color-bg-start));
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
   }
-  @media (max-width: 600px) {
-    .recommendations {
-      flex-direction: column;
-      align-items: center;
-    }
-    .card {
-      flex: 1 1 100%;
-      max-width: 100%;
-    }
-    .navbar {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 1rem;
-    }
-    .nav-right {
-      margin-top: 0.5rem;
-    }
+  .container {
+    padding: 0.5rem;
+    width: 100%;
   }
   
+  /* Header styling fixes */
+  .quiz-header {
+    width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .quiz-header h1 {
+    font-size: 1.8rem;
+    margin-top: 1rem;
+  }
+  
+  .congrats-section {
+    margin-top: 1rem;
+  }
+  
+  .congrats-section h2 {
+    font-size: 1.6rem;
+  }
+  
+  .congrats-section p {
+    font-size: 1rem;
+  }
+  
+  /* Badge adjustment */
+  .quiz-badge {
+    margin: 0.5rem 0;
+  }
+  
+  .badge-image {
+    width: 80px;
+  }
+  
+  /* Stats section fixes */
+  .quiz-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  
+  .stat {
+    width: 100%;
+    padding: 0.75rem;
+  }
+  
+  .stat h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .stat p {
+    font-size: 0.9rem;
+  }
+  
+  /* Table layout complete overhaul for mobile */
+  table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 1rem 0;
+    border-radius: 0;
+  }
+  
+  tr {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  th, td {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 0;
+  }
+  
+  th {
+    background-color: var(--color-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Recommendations section fixes */
+  .recommendations-container {
+    width: 100%;
+    margin: 1rem 0;
+  }
+  
+  .recommend-title {
+    font-size: 1.5rem;
+    text-align: center;
+    color: var(--color-surface);
+    margin-bottom: 1rem;
+  }
+  
+  .recommendations {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .card {
+    flex: 1;
+    max-width: 100%;
+    margin-bottom: 0;
+    padding: 1.5rem 1rem 1rem;
+  }
+  
+  .card .star {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .view-btn {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1rem;
+  }
+  
+  /* Action buttons fixes */
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+  
+  .continue-btn, .dashboard-btn {
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  /* Module navigation link */
+  .module {
+    align-self: flex-start;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+  }
+  
+  .module a {
+    font-size: 1rem;
+  }
+  
+  /* Additional fixes for the pointer */
+  .pointer {
+    display: inline-block;
+    margin-right: 0.25rem;
+  }
+  
+  /* View more link */
+  .view-more {
+    margin: 1rem 0;
+    padding: 0.5rem;
+    color: var(--color-surface);
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .quiz-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .congrats-section h2 {
+    font-size: 1.4rem;
+  }
+  
+  /* Further simplify the layout */
+  .container {
+    padding: 0.25rem;
+  }
+  
+  /* Make sure fonts are readable */
+  th, td {
+    font-size: 0.85rem;
+    padding: 0.75rem 0.5rem;
+  }
+}

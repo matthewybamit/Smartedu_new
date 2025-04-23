@@ -137,7 +137,183 @@ p {
     border-radius: 10px;
    
 }
-
+/* ────────── K-MEANS BANNER ────────── */
+.kmeans-banner {
+    background: rgba(255,255,255,0.1);
+    padding: 1.5rem;
+    margin: 2rem auto;
+    border-radius: 12px;
+    width: 80%;
+  }
+  .cluster-overview {
+    display: flex;               /* flex for detail cards */ 
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .cluster-detail {
+    background: rgba(255,255,255,0.05);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    flex: 1 1 150px;             /* grow/shrink */ 
+    text-align: center;
+  }
+  .cluster-label {
+    font-size: 0.9rem;
+    color: #ddd;
+  }
+  .cluster-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .cluster-summary p {
+    margin-top: 0.5rem;
+    line-height: 1.4;
+    color: #eee;
+  }
+  
+  /* ─────── RECOMMENDATIONS ─────── */
+  .recommendations-section {
+    width: 80%;
+    margin: 2rem auto;
+  }
+  .recommendations-section h3 {
+    color: white;
+    margin-bottom: 1rem;
+  }
+  .recommendations-grid {
+    display: grid;               /* grid for cards */ 
+    grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+    gap: 1.5rem;
+  }                               /* uses CSS Grid Layout :contentReference[oaicite:2]{index=2} */
+  .recommendation-card {
+    background: #0E2A5A;
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .recommendation-card.video .rec-icon i { color: #f44336; }
+  .recommendation-card.reading .rec-icon i { color: #4caf50; }
+  .rec-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .rec-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+  }
+  .rec-meta {
+    font-size: 0.85rem;
+    color: #ccc;
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .rec-desc {
+    flex-grow: 1;
+    font-size: 0.9rem;
+    color: #ddd;
+    margin-bottom: 1rem;
+  }
+  .rec-action {
+    text-align: right;
+  }
+  .rec-btn {
+    background: #ff9f1c;
+    color: #122D64;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .rec-btn:hover {
+    background: #ffa733;
+  }
+  
+  /* ─── PREFERRED SUBJECTS & TAGS ─── */
+  .preferred-subjects {
+    width: 80%;
+    margin: 1.5rem auto;
+    background: rgba(255,255,255,0.05);
+    padding: 1rem;
+    border-radius: 10px;
+    color: white;
+  }
+  .subject-tags {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .subject-tag {
+    background: #ff9f1c;
+    color: #122D64;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+  }
+  .preferred-badge {
+    background: #4caf50;
+    color: white;
+    padding: 0.15rem 0.5rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+  }
+  
+  /* ───── VIDEO THUMBNAIL ───── */
+  .video-thumbnail {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  .video-thumbnail img {
+    display: block;
+    width: 100%;
+  }
+  .play-button {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 2rem;
+    color: rgba(255,255,255,0.8);
+    pointer-events: none;
+  }
+  
+  /* ───── MODULES & BOOKS ───── */
+  .subject-modules {
+    margin-bottom: 2rem;
+  }
+  .subject-modules .subject-title {
+    color: white;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .books-grid {
+    /* already defined above */
+  }
+  .book-item {
+    cursor: pointer;
+  }
+  .book-cover {
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  .module-level {
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    background: #ff9f1c;
+    color: #122D64;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+  }
+  
 @media screen and (max-width: 768px) {
     .search-bar {
         margin-right: 8%;

@@ -1,6 +1,13 @@
 // Import the Firebase libraries
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+import { 
+    getAuth, 
+    signInWithPopup, 
+    signInWithRedirect, 
+    GoogleAuthProvider, 
+    signOut, 
+    getRedirectResult 
+} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -25,49 +32,80 @@ const profileSection = document.getElementById('profileSection');
 const profileImage = document.getElementById('profileImage');
 const profileName = document.getElementById('profileName');
 
+// Helper function to process user data and store it
+function processUserData(user) {
+    console.log('User Info:', user);
+
+    // Store user profile info in localStorage
+    localStorage.setItem('userProfileImage', user.photoURL);
+    localStorage.setItem('userName', user.displayName);
+    localStorage.setItem('userEmail', user.email);
+
+    // Prepare the data to be sent to the backend
+    const userData = {
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        // Since OAuth does not provide age, we default it to 0.
+        age: 0
+    };
+
+    // POST the user data to the PHP endpoint in the api folder
+    return fetch('api/storeUser.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message);
+        // Redirect after successful storage
+        window.location.href = 'dashboard.php';
+    })
+    .catch(error => {
+        console.error('Error while storing user data:', error);
+        alert('An error occurred while saving your data.');
+    });
+}
+
 // Google Sign-In Button Event Listener
-googleSignInBtn.addEventListener('click', () => {
-    signInWithPopup(auth, provider)
-        .then((result) => {
-            // Retrieve user info from result
-            const user = result.user;
-            console.log('User Info:', user);
-
-            // Optionally, store user profile info in localStorage
-            localStorage.setItem('userProfileImage', user.photoURL);
-            localStorage.setItem('userName', user.displayName);
-            localStorage.setItem('userEmail', user.email);
-
-            // Prepare the data to be sent to the backend
-            const userData = {
-                email: user.email,
-                displayName: user.displayName,
-                photoURL: user.photoURL,
-                // Since OAuth does not provide age, we default it to 0.
-                age: 0
-            };
-
-            // POST the user data to the PHP endpoint in the api folder
-            fetch('api/storeUser.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
+googleSignInBtn.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevent any default behavior
+    
+    // Check if mobile
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+        // Use redirect method for mobile instead of popup
+        signInWithRedirect(auth, provider);
+    } else {
+        // Use popup for desktop
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // Process user data from result
+                processUserData(result.user);
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.message);
-                // Redirect after successful storage
-                window.location.href = 'dashboard.php';
-            })
-            .catch(error => {
-                console.error('Error while storing user data:', error);
-                alert('An error occurred while saving your data.');
+            .catch((error) => {
+                console.error('Login Error:', error);
+                alert('Failed to login. Please try again.');
             });
-        })
-        .catch((error) => {
-            console.error('Login Error:', error);
-            alert('Failed to login. Please try again.');
-        });
+    }
 });
+
+// Check if we returned from a redirect
+getRedirectResult(auth)
+    .then((result) => {
+        if (result) {
+            // User signed in after redirect
+            processUserData(result.user);
+        }
+    }).catch((error) => {
+        console.error('Redirect Error:', error);
+        if (error.code === 'auth/popup-closed-by-user') {
+            console.log('User closed the popup');
+        } else {
+            alert('Authentication failed. Please try again.');
+        }
+    });

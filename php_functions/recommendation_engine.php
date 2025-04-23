@@ -86,53 +86,54 @@ function generateUserRecommendations($pdo, $userEmail, $limit = 5) {
                 $level = 'Beginner';
             }
             
-            // Get content for this subject and level
-            if ($preferredStyle === 'reading' || $preferredStyle === null) {
-                // Get reading materials
-                $lessonStmt = $pdo->prepare("
-                    SELECT id, title, description 
-                    FROM lessons 
-                    WHERE subject = ? AND level = ? 
-                    ORDER BY id ASC 
-                    LIMIT 2
-                ");
-                $lessonStmt->execute([$subject, $level]);
-                
-                while ($lesson = $lessonStmt->fetch()) {
-                    $recommendations[] = [
-                        'type' => 'lesson',
-                        'id' => $lesson['id'],
-                        'title' => $lesson['title'],
-                        'description' => substr($lesson['description'], 0, 100) . '...',
-                        'subject' => $subject,
-                        'level' => $level,
-                        'priority' => 1
-                    ];
-                }
+            // Always get a mix of content types regardless of preferred style
+            // This ensures users get exposed to both learning methods
+            
+            // Get reading materials
+            $lessonStmt = $pdo->prepare("
+                SELECT id, title, description 
+                FROM lessons 
+                WHERE subject = ? AND level = ? 
+                ORDER BY id ASC 
+                LIMIT 1
+            ");
+            $lessonStmt->execute([$subject, $level]);
+            
+            while ($lesson = $lessonStmt->fetch()) {
+                $recommendations[] = [
+                    'type' => 'lesson',
+                    'source' => 'reading', // Add source field for template consistency
+                    'id' => $lesson['id'],
+                    'title' => $lesson['title'],
+                    'description' => substr($lesson['description'], 0, 100) . '...',
+                    'subject' => $subject,
+                    'level' => $level,
+                    'priority' => ($preferredStyle === 'reading') ? 1 : 2
+                ];
             }
             
-            if ($preferredStyle === 'video' || $preferredStyle === null) {
-                // Get video materials
-                $videoStmt = $pdo->prepare("
-                    SELECT id, title, description 
-                    FROM video_lessons 
-                    WHERE subject = ? AND level = ? 
-                    ORDER BY id ASC 
-                    LIMIT 2
-                ");
-                $videoStmt->execute([$subject, $level]);
-                
-                while ($video = $videoStmt->fetch()) {
-                    $recommendations[] = [
-                        'type' => 'video',
-                        'id' => $video['id'],
-                        'title' => $video['title'],
-                        'description' => substr($video['description'], 0, 100) . '...',
-                        'subject' => $subject,
-                        'level' => $level,
-                        'priority' => 1
-                    ];
-                }
+            // Get video materials
+            $videoStmt = $pdo->prepare("
+                SELECT id, title, description, youtube_url
+                FROM video_lessons 
+                WHERE subject = ? AND level = ? 
+                ORDER BY id ASC 
+                LIMIT 1
+            ");
+            $videoStmt->execute([$subject, $level]);
+            
+            while ($video = $videoStmt->fetch()) {
+                $recommendations[] = [
+                    'type' => 'video',
+                    'source' => 'video', // Add source field for template consistency
+                    'id' => $video['id'],
+                    'title' => $video['title'],
+                    'description' => substr($video['description'], 0, 100) . '...',
+                    'subject' => $subject,
+                    'level' => $level,
+                    'url' => $video['youtube_url'] ?? '',
+                    'priority' => ($preferredStyle === 'video') ? 1 : 2
+                ];
             }
         }
         
@@ -316,16 +317,16 @@ function saveUserRecommendations($pdo, $userEmail, $recommendations) {
     try {
         // Clear existing unviewed recommendations
         $clearStmt = $pdo->prepare("
-            DELETE FROM recommendations 
+            DELETE FROM user_recommendations 
             WHERE user_email = ? AND is_viewed = 0
         ");
         $clearStmt->execute([$userEmail]);
         
         // Insert new recommendations
         $insertStmt = $pdo->prepare("
-            INSERT INTO recommendations 
-            (user_email, content_type, content_id, priority, is_viewed, date_created) 
-            VALUES (?, ?, ?, ?, 0, NOW())
+            INSERT INTO user_recommendations 
+            (user_email, lesson_id, video_id, recommendation_type, priority, is_viewed, date_created) 
+            VALUES (?, ?, ?, ?, ?, 0, NOW())
         ");
         
         foreach ($recommendations as $rec) {

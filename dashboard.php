@@ -19,18 +19,18 @@ try {
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$userEmail]);
     $user = $stmt->fetch();
-    
+
     if (!$user) {
         header('Location: logout.php');
         exit;
     }
-    
+
     // Get performance metrics
     $performance = getUserPerformanceMetrics($pdo, $userEmail);
-    
+
     // Run clustering if needed (periodically)
     $shouldCluster = false;
-    
+
     $lastClusterStmt = $pdo->prepare("
         SELECT last_updated FROM user_clusters 
         WHERE user_email = ? 
@@ -39,28 +39,28 @@ try {
     ");
     $lastClusterStmt->execute([$userEmail]);
     $lastCluster = $lastClusterStmt->fetch();
-    
+
     if (!$lastCluster) {
         $shouldCluster = true;
     } else {
         $lastUpdate = strtotime($lastCluster['last_updated']);
         $now = time();
         $daysSinceUpdate = ($now - $lastUpdate) / (60 * 60 * 24);
-        
+
         if ($daysSinceUpdate > 1) { // Refresh clustering every day
             $shouldCluster = true;
         }
     }
-    
+
     if ($shouldCluster) {
         // Run clustering in background (would be better with a job queue in production)
         clusterUsers($pdo);
     }
-    
+
     // Generate recommendations
     $recommendations = generateUserRecommendations($pdo, $userEmail, 6);
     saveUserRecommendations($pdo, $userEmail, $recommendations);
-    
+
     // Get recent quiz attempts
     $quizStmt = $pdo->prepare("
         SELECT * FROM quiz_attempts 
@@ -70,7 +70,7 @@ try {
     ");
     $quizStmt->execute([$userEmail]);
     $recentQuizzes = $quizStmt->fetchAll();
-    
+
 } catch (PDOException $e) {
     error_log("Dashboard error: " . $e->getMessage());
     $error = "An error occurred loading your dashboard. Please try again later.";
@@ -139,7 +139,7 @@ try {
                 <div class="dashboard-column">
                     <div class="dashboard-card performance-card">
                         <h2><i class="fas fa-chart-line"></i> Your Performance</h2>
-                        
+
                         <div class="performance-stats">
                             <div class="stat-item">
                                 <div class="stat-value"><?php echo $performance['total_quizzes']; ?></div>
@@ -157,7 +157,7 @@ try {
 
                         <div class="subject-performance">
                             <h3>Subject Performance</h3>
-                            
+
                             <?php if (empty($performance['subjects'])): ?>
                                 <p class="empty-state">Complete quizzes to see your performance by subject.</p>
                             <?php else: ?>
@@ -176,7 +176,7 @@ try {
 
                     <div class="dashboard-card recent-activity">
                         <h2><i class="fas fa-history"></i> Recent Activity</h2>
-                        
+
                         <?php if (empty($recentQuizzes)): ?>
                             <p class="empty-state">You haven't completed any quizzes yet. Start learning!</p>
                         <?php else: ?>
@@ -205,7 +205,7 @@ try {
                     <div class="dashboard-card recommendations">
                         <h2><i class="fas fa-lightbulb"></i> Personalized Recommendations</h2>
                         <p class="recommendation-info">Based on your learning style and performance</p>
-                        
+
                         <?php if (empty($recommendations)): ?>
                             <p class="empty-state">Complete more quizzes to get personalized recommendations.</p>
                         <?php else: ?>
@@ -220,13 +220,14 @@ try {
                                             <div class="rec-meta">
                                                 <span class="subject"><?php echo htmlspecialchars($rec['subject']); ?></span>
                                                 <span class="level"><?php echo htmlspecialchars($rec['level']); ?></span>
+                                                <span class="learning-type <?php echo $rec['type']; ?>"><?php echo $rec['type'] === 'lesson' ? 'Reading' : 'Video'; ?></span>
                                             </div>
                                             <p class="rec-desc"><?php echo htmlspecialchars($rec['description']); ?></p>
-                                            <?php if ($rec['type'] === 'video'): ?>
-                                <a href="video.php?id=<?php echo urlencode($rec['id']); ?>" class="rec-button">Start Learning</a>
-                            <?php else: ?>
-                                <a href="read.php?subject=<?php echo urlencode($rec['subject']); ?>&lesson=<?php echo urlencode($rec['id']); ?>" class="rec-button">Start Learning</a>
-                            <?php endif; ?>
+                                            <?php if ($rec['type'] === 'lesson'): ?>
+                                                <a href="read.php?subject=<?php echo urlencode($rec['subject']); ?>&lesson=<?php echo $rec['id']; ?>" class="rec-button">Read Now</a>
+                                            <?php else: ?>
+                                                <a href="video.php?id=<?php echo $rec['id']; ?>" class="rec-button">Watch Now</a>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
@@ -236,7 +237,7 @@ try {
 
                     <div class="dashboard-card learning-insights">
                         <h2><i class="fas fa-brain"></i> Learning Insights</h2>
-                        
+
                         <?php if ($performance['total_quizzes'] < 3): ?>
                             <p class="empty-state">Complete at least 3 quizzes to unlock your learning insights.</p>
                         <?php else: ?>
@@ -244,7 +245,7 @@ try {
                                 <h3>Learning Style</h3>
                                 <p>You seem to prefer <strong><?php echo isset($styleCount) && $styleCount['reading'] > $styleCount['video'] ? 'reading' : 'video'; ?> lessons</strong>. We'll prioritize this format in your recommendations.</p>
                             </div>
-                            
+
                             <div class="insight-item">
                                 <h3>Strengths</h3>
                                 <p>
@@ -255,7 +256,7 @@ try {
                                             $strengths[] = $subject;
                                         }
                                     }
-                                    
+
                                     if (empty($strengths)) {
                                         echo "Keep practicing to develop your strengths!";
                                     } else {
@@ -264,7 +265,7 @@ try {
                                     ?>
                                 </p>
                             </div>
-                            
+
                             <div class="insight-item">
                                 <h3>Areas for Improvement</h3>
                                 <p>
@@ -275,7 +276,7 @@ try {
                                             $weaknesses[] = $subject;
                                         }
                                     }
-                                    
+
                                     if (empty($weaknesses)) {
                                         echo "Great job! You're performing well across all subjects.";
                                     } else {

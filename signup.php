@@ -18,32 +18,29 @@ include 'php_functions/signup_function.php';
     <div class="container">
         <div class="left-section">
             <h2>Create Your Learning Account</h2>
-          
-            <form action="" method="post">
-                <label for="firstname" class="fname">First Name</label>
-                <input type="text" id="fname" name="fname" required>
 
+            <form action="" method="post">
                 <div class="row"> 
+                    <div class="column">
+                        <label for="firstname" class="fname">First Name</label>
+                        <input type="text" id="fname" name="fname" required>
+                    </div>
+
                     <div class="column">
                         <label for="lastname" class="lname">Last Name</label>
                         <input type="text" id="lname" name="lname" required>
                     </div>
-            
-                    <div class="column">
-                        <label for="age" class="age">Age</label>
-                        <input type="number" id="age" name="age" required>
-                    </div>
                 </div>
 
-                <label for="password" class="pass">Email</label>
+                <label for="email" class="email">Email</label>
                 <input type="email" id="email" name="email" required>
 
                 <label for="username" class="user">Username</label>
                 <input type="text" id="username" name="username" required>
-                
+
                 <label for="password" class="pass">Password</label>
                 <input type="password" id="password" name="password" required>
-                
+
                 <button type="submit" class="sign-in">Sign Up</button>
             </form>
             <p class="signup-text">Already have an account? <a href="login.php">Sign In</a></p>
@@ -59,32 +56,22 @@ include 'php_functions/signup_function.php';
         </div>
     </div>
 
-
-
-
-
-
-  <!-- Modal -->
-  <div id="myModal" class="modal">
-        <div class="modal-content <?php echo $message == 'Account created successfully!' ? 'success' : 'error'; ?>">
-            <p class="modal-message"><?php echo $message; ?></p>
+    <div id="myModal" class="modal">
+        <div class="modal-content <?php echo isset($message) && $message == 'Account created successfully!' ? 'success' : 'error'; ?>">
+            <p class="modal-message"><?php echo isset($message) ? $message : ''; ?></p>
             <button class="close-btn" onclick="closeModal()">Close</button>
         </div>
     </div>
 
     <script>
-        // Show the modal if a message exists
-        var message = "<?php echo $message; ?>";
+        var message = "<?php echo isset($message) ? $message : ''; ?>";
         if (message) {
             document.getElementById('myModal').style.display = 'block';
         }
 
-        // Close the modal
         function closeModal() {
             document.getElementById('myModal').style.display = 'none';
         }
     </script>
-
-
 </body>
 </html>

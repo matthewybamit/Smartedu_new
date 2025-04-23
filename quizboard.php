@@ -107,24 +107,164 @@ if ($percentage >= 90) {
 // Try to get personalized recommendations from the database
 $recommendations = [];
 try {
-    // This would ideally be based on user's learning history, 
-    // but for simplicity we'll just get content by subject
-    $stmt = $pdo->prepare("
-        SELECT id, title, description 
-        FROM lessons 
-        WHERE subject = :subject 
-        ORDER BY RAND() 
-        LIMIT 4
-    ");
-    $stmt->bindParam(':subject', $subject);
-    $stmt->execute();
+    // First check if we can get recommendations from cluster-based approach
+    if (!empty($userEmail)) {
+        // Try to get user's cluster
+        $clusterStmt = $pdo->prepare("
+            SELECT cluster_id FROM user_clusters 
+            WHERE user_email = ? 
+            ORDER BY last_updated DESC 
+            LIMIT 1
+        ");
+        $clusterStmt->execute([$userEmail]);
+        $cluster = $clusterStmt->fetch();
+        
+        if ($cluster) {
+            $clusterId = $cluster['cluster_id'];
+            
+            // Get performance stats to determine learning style preference
+            $styleStmt = $pdo->prepare("
+                SELECT learning_style, SUM(quizzes_taken) as count 
+                FROM user_performance 
+                WHERE user_email = ? 
+                GROUP BY learning_style
+                ORDER BY count DESC
+            ");
+            $styleStmt->execute([$userEmail]);
+            $preferredStyle = null;
+            
+            if ($row = $styleStmt->fetch()) {
+                $preferredStyle = $row['learning_style'];
+            }
+            
+            // Get users in the same cluster
+            $clusterUsersStmt = $pdo->prepare("
+                SELECT user_email 
+                FROM user_clusters 
+                WHERE cluster_id = ? AND user_email != ? 
+                LIMIT 10
+            ");
+            $clusterUsersStmt->execute([$clusterId, $userEmail]);
+            $clusterUsers = $clusterUsersStmt->fetchAll(PDO::FETCH_COLUMN);
+            
+            if (!empty($clusterUsers)) {
+                // Find successful content among cluster users
+                $placeholders = implode(',', array_fill(0, count($clusterUsers), '?'));
+                $params = $clusterUsers;
+                $params[] = 0.7; // 70% score threshold
+                
+                $popularContentStmt = $pdo->prepare("
+                    SELECT qa.subject, qa.source, qa.quiz_id 
+                    FROM quiz_attempts qa 
+                    WHERE qa.user_email IN ({$placeholders}) 
+                    AND (qa.score / qa.total_questions) > ?
+                    GROUP BY qa.subject, qa.source, qa.quiz_id
+                    ORDER BY COUNT(*) DESC
+                    LIMIT 4
+                ");
+                $popularContentStmt->execute($params);
+                
+                while ($content = $popularContentStmt->fetch()) {
+                    if ($content['source'] === 'video') {
+                        // Get video details
+                        $detailStmt = $pdo->prepare("
+                            SELECT v.id, v.title, v.description, v.level
+                            FROM video_lessons v
+                            JOIN video_quizzes q ON v.id = q.video_id
+                            WHERE q.id = ? AND v.subject = ?
+                        ");
+                        $detailStmt->execute([$content['quiz_id'], $content['subject']]);
+                        
+                        if ($detail = $detailStmt->fetch()) {
+                            $recommendations[] = [
+                                'id' => $detail['id'],
+                                'title' => $detail['title'],
+                                'desc' => substr($detail['description'], 0, 50) . '...',
+                                'type' => 'video',
+                                'source' => 'video',
+                                'subject' => $content['subject'],
+                                'level' => $detail['level']
+                            ];
+                        }
+                    } else {
+                        // Get lesson details
+                        $detailStmt = $pdo->prepare("
+                            SELECT l.id, l.title, l.description, l.level
+                            FROM lessons l
+                            JOIN quizzes q ON l.id = q.lesson_id
+                            WHERE q.id = ? AND l.subject = ?
+                        ");
+                        $detailStmt->execute([$content['quiz_id'], $content['subject']]);
+                        
+                        if ($detail = $detailStmt->fetch()) {
+                            $recommendations[] = [
+                                'id' => $detail['id'],
+                                'title' => $detail['title'],
+                                'desc' => substr($detail['description'], 0, 50) . '...',
+                                'type' => 'lesson',
+                                'source' => 'reading',
+                                'subject' => $content['subject'],
+                                'level' => $detail['level']
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+    }
     
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $recommendations[] = [
-            'id' => $row['id'],
-            'title' => $row['title'],
-            'desc' => substr($row['description'], 0, 50) . '...'
-        ];
+    // If we don't have enough recommendations from clustering, supplement with standard ones
+    if (count($recommendations) < 4) {
+        // Get a mix of lessons and videos based on the subject
+        $limit = max(1, (4 - count($recommendations)) / 2);
+        
+        // First, get relevant lessons
+        $lessonStmt = $pdo->prepare("
+            SELECT id, title, description, 'lesson' as type, level
+            FROM lessons 
+            WHERE subject = :subject 
+            ORDER BY RAND() 
+            LIMIT :limit
+        ");
+        $lessonStmt->bindParam(':subject', $subject);
+        $lessonStmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $lessonStmt->execute();
+        
+        while ($row = $lessonStmt->fetch(PDO::FETCH_ASSOC)) {
+            $recommendations[] = [
+                'id' => $row['id'],
+                'title' => $row['title'],
+                'desc' => substr($row['description'], 0, 50) . '...',
+                'type' => 'lesson',
+                'source' => 'reading',
+                'subject' => $subject,
+                'level' => $row['level']
+            ];
+        }
+        
+        // Then, get relevant videos
+        $videoStmt = $pdo->prepare("
+            SELECT id, title, description, 'video' as type, level
+            FROM video_lessons 
+            WHERE subject = :subject 
+            ORDER BY RAND() 
+            LIMIT :limit
+        ");
+        $videoStmt->bindParam(':subject', $subject);
+        $videoStmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $videoStmt->execute();
+        
+        while ($row = $videoStmt->fetch(PDO::FETCH_ASSOC)) {
+            $recommendations[] = [
+                'id' => $row['id'],
+                'title' => $row['title'],
+                'desc' => substr($row['description'], 0, 50) . '...',
+                'type' => 'video',
+                'source' => 'video',
+                'subject' => $subject,
+                'level' => $row['level']
+            ];
+        }
     }
 } catch (PDOException $e) {
     error_log("Database error fetching recommendations: " . $e->getMessage());
@@ -175,13 +315,84 @@ if (empty($recommendations)) {
     }
 }
 
-// Get personalized strengths and weak areas based on our clustering analysis
+// Get personalized strengths, weak areas, and cluster info based on our clustering analysis
 $strengths = [];
 $weakAreas = [];
 $suggestedFocus = "";
 $challengingQuestions = "";
+$clusterInfo = null;
 
 try {
+    // First check if user is part of a cluster
+    if (!empty($userEmail)) {
+        // Try to get user's cluster
+        $clusterStmt = $pdo->prepare("
+            SELECT uc.cluster_id, 
+                  COUNT(DISTINCT other_uc.user_email) as cluster_size
+            FROM user_clusters uc
+            LEFT JOIN user_clusters other_uc ON uc.cluster_id = other_uc.cluster_id
+            WHERE uc.user_email = ?
+            GROUP BY uc.cluster_id
+            ORDER BY uc.last_updated DESC
+            LIMIT 1
+        ");
+        $clusterStmt->execute([$userEmail]);
+        $userClusterInfo = $clusterStmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($userClusterInfo) {
+            $clusterId = $userClusterInfo['cluster_id'];
+            $clusterSize = $userClusterInfo['cluster_size'];
+            
+            // Get cluster learning characteristics
+            $clusterCharacteristicsStmt = $pdo->prepare("
+                SELECT up.learning_style, 
+                      AVG(up.avg_score) as avg_cluster_score,
+                      COUNT(*) as style_count
+                FROM user_clusters uc
+                JOIN user_performance up ON uc.user_email = up.user_email
+                WHERE uc.cluster_id = ?
+                GROUP BY up.learning_style
+                ORDER BY style_count DESC
+            ");
+            $clusterCharacteristicsStmt->execute([$clusterId]);
+            
+            $clusterStyles = [];
+            $clusterDominantStyle = null;
+            $clusterAvgScore = 0;
+            
+            while ($characteristic = $clusterCharacteristicsStmt->fetch(PDO::FETCH_ASSOC)) {
+                if (!empty($characteristic['learning_style'])) {
+                    $clusterStyles[$characteristic['learning_style']] = [
+                        'count' => $characteristic['style_count'],
+                        'avg_score' => $characteristic['avg_cluster_score']
+                    ];
+                    
+                    if ($clusterDominantStyle === null || 
+                        $characteristic['style_count'] > $clusterStyles[$clusterDominantStyle]['count']) {
+                        $clusterDominantStyle = $characteristic['learning_style'];
+                    }
+                    
+                    $clusterAvgScore += $characteristic['avg_cluster_score'] * $characteristic['style_count'];
+                }
+            }
+            
+            // Calculate average score for the cluster
+            $totalStyles = array_sum(array_column($clusterStyles, 'count'));
+            if ($totalStyles > 0) {
+                $clusterAvgScore = $clusterAvgScore / $totalStyles;
+            }
+            
+            // Store cluster information for display
+            $clusterInfo = [
+                'id' => $clusterId,
+                'size' => $clusterSize,
+                'dominant_style' => $clusterDominantStyle,
+                'avg_score' => round($clusterAvgScore, 1),
+                'styles' => $clusterStyles
+            ];
+        }
+    }
+    
     // Get user's performance data including quiz attempts
     $perfQuery = $pdo->prepare("
         SELECT up.subject, up.avg_score, qa.incorrect_questions
@@ -272,6 +483,7 @@ $weakAreasText = implode(", ", $weakAreas);
     <link rel="stylesheet" href="css/quizboard.css">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/recommendation_cards.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
@@ -358,21 +570,70 @@ $weakAreasText = implode(", ", $weakAreas);
         </tr>
     </table>
 
-    <section class="recommendations-container">
-        <h2 class="recommend-title">Recommendations</h2>
+    <section class="recommendations-section">
+        <h2 class="recommend-title">Personalized Recommendations</h2>
+        <p>Based on your performance and learning style</p>
+        
+        <?php if (isset($clusterInfo)): ?>
+        <div class="cluster-analytics">
+            <div class="cluster-badge">
+                <span class="cluster-label">Learning Profile Group</span>
+                <span class="cluster-id"><?php echo $clusterInfo['id'] ?? 'N/A'; ?></span>
+            </div>
+            <div class="cluster-stats">
+                <div class="cluster-stat">
+                    <span class="stat-label">Group Size</span>
+                    <span class="stat-value"><?php echo isset($clusterInfo['size']) ? $clusterInfo['size'] . ' learner' . ($clusterInfo['size'] != 1 ? 's' : '') : 'N/A'; ?></span>
+                </div>
+                <div class="cluster-stat">
+                    <span class="stat-label">Avg. Score</span>
+                    <span class="stat-value"><?php echo isset($clusterInfo['avg_score']) ? $clusterInfo['avg_score'] . '%' : 'N/A'; ?></span>
+                </div>
+                <div class="cluster-stat">
+                    <span class="stat-label">Primary Learning Style</span>
+                    <span class="stat-value"><?php echo isset($clusterInfo['dominant_style']) ? ucfirst($clusterInfo['dominant_style']) : 'Mixed'; ?></span>
+                </div>
+            </div>
+            <p class="cluster-insight">Based on K-means clustering analysis, you have been matched with learners who have similar learning patterns and preferences.</p>
+        </div>
+        <?php endif; ?>
         
         <div class="recommendations">
             <?php foreach ($recommendations as $rec): ?>
-            <div class="card">
-                <div class="star"><i class="fas fa-star"></i></div>
+            <div class="card <?php echo isset($rec['type']) ? $rec['type'] : ''; ?>">
+                <div class="star"><i class="<?php echo isset($rec['type']) && $rec['type'] === 'video' ? 'fas fa-video' : 'fas fa-book'; ?>"></i></div>
                 <h3><?php echo htmlspecialchars($rec['title']); ?></h3>
+                
+                <?php if (isset($rec['subject']) || isset($rec['level'])): ?>
+                <div class="rec-meta">
+                    <?php if (isset($rec['subject'])): ?>
+                    <span class="subject"><?php echo htmlspecialchars($rec['subject']); ?></span>
+                    <?php endif; ?>
+                    
+                    <?php if (isset($rec['level'])): ?>
+                    <span class="level"><?php echo htmlspecialchars($rec['level']); ?></span>
+                    <?php endif; ?>
+                    
+                    <span class="type"><?php echo isset($rec['type']) && $rec['type'] === 'video' ? 'Video' : 'Reading'; ?></span>
+                </div>
+                <?php endif; ?>
+                
                 <p><?php echo htmlspecialchars($rec['desc']); ?></p>
-                <button class="view-btn" <?php if (isset($rec['id'])): ?>onclick="window.location.href='read.php?subject=<?php echo urlencode($subject); ?>&lesson=<?php echo $rec['id']; ?>'"<?php endif; ?>>View</button>
+                
+                <?php if (isset($rec['id'])): ?>
+                    <?php if (isset($rec['type']) && $rec['type'] === 'video'): ?>
+                        <button class="view-btn" onclick="window.location.href='video.php?subject=<?php echo urlencode($rec['subject'] ?? $subject); ?>&video=<?php echo $rec['id']; ?>'">Watch Now</button>
+                    <?php else: ?>
+                        <button class="view-btn" onclick="window.location.href='read.php?subject=<?php echo urlencode($rec['subject'] ?? $subject); ?>&lesson=<?php echo $rec['id']; ?>'">Read Now</button>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <button class="view-btn" onclick="window.location.href='<?php echo isset($rec['type']) && $rec['type'] === 'video' ? 'video.php' : 'read.php'; ?>?subject=<?php echo urlencode($subject); ?>'">View Now</button>
+                <?php endif; ?>
             </div>
             <?php endforeach; ?>
         </div>
 
-        <p class="view-more">View More</p>
+        <p class="view-more">View More Recommendations</p>
     </section>
 
     <div class="action-buttons">
