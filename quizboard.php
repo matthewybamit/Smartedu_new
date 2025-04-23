@@ -1,7 +1,6 @@
 <?php
 session_start();
 include 'php_functions/db_connection.php';
-include 'php_functions/kmeans_clustering.php';
 
 $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
 
@@ -25,7 +24,8 @@ $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : (isset($_SESSION['
 $userQuizzes = [];
 if (!empty($userEmail)) {
     try {
-        // Get the latest quiz attempt
+        // This assumes you have a quiz_attempts table in your database
+        // If not, we'll continue with URL parameter data
         $stmt = $pdo->prepare("
             SELECT * FROM quiz_attempts 
             WHERE user_email = :email 
@@ -104,81 +104,30 @@ if ($percentage >= 90) {
     $performanceLevel = "Average";
 }
 
-// Get cluster-based recommendations
+// Try to get personalized recommendations from the database
 $recommendations = [];
-if (!empty($userEmail)) {
-    $recommendations = getClusterBasedRecommendations($pdo, $userEmail, 4);
-}
-
-// If we couldn't get recommendations from clustering, check the database
-if (empty($recommendations)) {
-    try {
-        // Try to get from recommendations table
-        $recQuery = $pdo->prepare("
-            SELECT 
-                r.content_id,
-                r.content_type,
-                CASE 
-                    WHEN r.content_type = 'read' THEN l.title
-                    WHEN r.content_type = 'video' THEN vl.title
-                END AS title,
-                CASE 
-                    WHEN r.content_type = 'read' THEN l.description
-                    WHEN r.content_type = 'video' THEN vl.description
-                END AS description,
-                CASE 
-                    WHEN r.content_type = 'read' THEN l.subject
-                    WHEN r.content_type = 'video' THEN vl.subject
-                END AS subject
-            FROM recommendations r
-            LEFT JOIN lessons l ON r.content_type = 'read' AND r.content_id = l.id
-            LEFT JOIN video_lessons vl ON r.content_type = 'video' AND r.content_id = vl.id
-            WHERE r.user_email = :email
-            ORDER BY r.priority DESC, r.date_created DESC
-            LIMIT 4
-        ");
-        $recQuery->bindParam(':email', $userEmail);
-        $recQuery->execute();
-        
-        while ($rec = $recQuery->fetch(PDO::FETCH_ASSOC)) {
-            $recommendations[] = [
-                'id' => $rec['content_id'],
-                'title' => $rec['title'],
-                'desc' => substr($rec['description'] ?? '', 0, 50) . '...',
-                'subject' => $rec['subject'],
-                'source' => $rec['content_type']
-            ];
-        }
-    } catch (PDOException $e) {
-        error_log("Error getting recommendations: " . $e->getMessage());
+try {
+    // This would ideally be based on user's learning history, 
+    // but for simplicity we'll just get content by subject
+    $stmt = $pdo->prepare("
+        SELECT id, title, description 
+        FROM lessons 
+        WHERE subject = :subject 
+        ORDER BY RAND() 
+        LIMIT 4
+    ");
+    $stmt->bindParam(':subject', $subject);
+    $stmt->execute();
+    
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $recommendations[] = [
+            'id' => $row['id'],
+            'title' => $row['title'],
+            'desc' => substr($row['description'], 0, 50) . '...'
+        ];
     }
-}
-
-// If still no recommendations, try content for the subject
-if (empty($recommendations)) {
-    try {
-        $stmt = $pdo->prepare("
-            SELECT id, title, description 
-            FROM lessons 
-            WHERE subject = :subject 
-            ORDER BY RAND() 
-            LIMIT 4
-        ");
-        $stmt->bindParam(':subject', $subject);
-        $stmt->execute();
-        
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $recommendations[] = [
-                'id' => $row['id'],
-                'title' => $row['title'],
-                'desc' => substr($row['description'] ?? '', 0, 50) . '...',
-                'subject' => $subject,
-                'source' => 'read'
-            ];
-        }
-    } catch (PDOException $e) {
-        error_log("Database error fetching recommendations: " . $e->getMessage());
-    }
+} catch (PDOException $e) {
+    error_log("Database error fetching recommendations: " . $e->getMessage());
 }
 
 // If we couldn't get recommendations from DB, use the default ones
@@ -230,103 +179,88 @@ if (empty($recommendations)) {
 $strengths = [];
 $weakAreas = [];
 $suggestedFocus = "";
+$challengingQuestions = "";
 
 try {
-    // Get user's performance data
+    // Get user's performance data including quiz attempts
     $perfQuery = $pdo->prepare("
-        SELECT subject, avg_score
-        FROM user_performance
-        WHERE user_email = :email
-        ORDER BY avg_score DESC
+        SELECT up.subject, up.avg_score, qa.incorrect_questions
+        FROM user_performance up
+        LEFT JOIN quiz_attempts qa ON qa.user_email = up.user_email 
+        AND qa.subject = up.subject
+        WHERE up.user_email = :email
+        ORDER BY qa.date_completed DESC, up.avg_score DESC
     ");
     $perfQuery->bindParam(':email', $userEmail);
     $perfQuery->execute();
-    
+
     $highPerformanceSubjects = [];
     $lowPerformanceSubjects = [];
-    
+    $processedSubjects = [];
     while ($perf = $perfQuery->fetch(PDO::FETCH_ASSOC)) {
-        if ($perf['avg_score'] >= 70) {
-            $highPerformanceSubjects[] = $perf['subject'];
-        } else {
-            $lowPerformanceSubjects[] = $perf['subject'];
+        // Only process each subject once
+        if (!in_array($perf['subject'], $processedSubjects)) {
+            if ($perf['avg_score'] >= 70) {
+                $highPerformanceSubjects[] = $perf['subject'];
+            } else {
+                $lowPerformanceSubjects[] = $perf['subject'];
+            }
+            $processedSubjects[] = $perf['subject'];
+        }
+
+        // Get challenging questions from the most recent attempt
+        if (!empty($perf['incorrect_questions']) && empty($challengingQuestions)) {
+            $challengingQuestions = $perf['incorrect_questions'];
         }
     }
-    
+
+    // If no challenging questions found, get them from the latest quiz attempt
+    if (empty($challengingQuestions)) {
+        $latestQuizStmt = $pdo->prepare("
+            SELECT incorrect_questions 
+            FROM quiz_attempts 
+            WHERE user_email = :email 
+            AND subject = :subject
+            ORDER BY date_completed DESC 
+            LIMIT 1
+        ");
+        $latestQuizStmt->execute([
+            ':email' => $userEmail,
+            ':subject' => $subject
+        ]);
+        if ($latestQuiz = $latestQuizStmt->fetch()) {
+            $challengingQuestions = $latestQuiz['incorrect_questions'];
+        }
+    }
+
     // Get learning style preference
-    $styleQuery = $pdo->prepare("
-        SELECT learning_style 
-        FROM user_performance 
-        WHERE user_email = :email 
-        ORDER BY quizzes_taken DESC 
-        LIMIT 1
-    ");
-    $styleQuery->bindParam(':email', $userEmail);
-    $styleQuery->execute();
-    
-    $learningStyle = "";
-    if ($styleQuery->rowCount() > 0) {
-        $style = $styleQuery->fetch(PDO::FETCH_ASSOC);
-        $learningStyle = $style['learning_style'];
+
+    // Simple logic for strengths and weaknesses (replace with more sophisticated logic if needed)
+    $strengths = $highPerformanceSubjects;
+    $weakAreas = $lowPerformanceSubjects;
+    if (empty($strengths)) {
+        $strengths = ["General Knowledge"];
     }
-    
-    // Set strengths and weak areas
-    $strengths = !empty($highPerformanceSubjects) ? $highPerformanceSubjects : ["General Knowledge"];
-    $weakAreas = !empty($lowPerformanceSubjects) ? $lowPerformanceSubjects : ["Need more quiz attempts"];
-    
-    // Customize suggested focus
-    if (!empty($lowPerformanceSubjects)) {
-        $suggestedFocus = "Focus on " . implode(", ", $lowPerformanceSubjects) . 
-                        " using " . ($learningStyle == 'video' ? "video lessons" : "reading materials");
-    } else if (!empty($highPerformanceSubjects)) {
-        $suggestedFocus = "Try more advanced content in " . implode(", ", $highPerformanceSubjects);
-    } else {
-        $suggestedFocus = "Complete more quizzes to get personalized recommendations";
+    if (empty($weakAreas)) {
+        $weakAreas = ["Specific Details", "Concept Application"];
     }
-    
+    $suggestedFocus = "Review fundamental concepts and study each topic more thoroughly";
+
+
 } catch (PDOException $e) {
-    error_log("Error getting performance data: " . $e->getMessage());
-    
-    // Default values if there's an error
-    if ($subject === 'English') {
-        if ($percentage >= 70) {
-            $strengths = ["Vocabulary", "Reading Comprehension"];
-            $weakAreas = ["Grammar", "Writing"];
-            $suggestedFocus = "Practice grammar exercises and writing short essays";
-        } else {
-            $strengths = ["Basic Communication"];
-            $weakAreas = ["Vocabulary", "Grammar", "Comprehension"];
-            $suggestedFocus = "Work on expanding vocabulary and understanding sentence structure";
-        }
-    } else if ($subject === 'Mathematics') {
-        if ($percentage >= 70) {
-            $strengths = ["Calculations", "Basic Formulas"];
-            $weakAreas = ["Word Problems", "Advanced Concepts"];
-            $suggestedFocus = "Practice more complex word problems and applications";
-        } else {
-            $strengths = ["Simple Arithmetic"];
-            $weakAreas = ["Algebra", "Geometry", "Problem-Solving"];
-            $suggestedFocus = "Review foundational math concepts and problem-solving strategies";
-        }
-    } else {
-        if ($percentage >= 70) {
-            $strengths = ["Core Concepts", "Basic Principles"];
-            $weakAreas = ["Advanced Applications", "Complex Topics"];
-            $suggestedFocus = "Tackle more challenging topics and practical applications";
-        } else {
-            $strengths = ["General Knowledge"];
-            $weakAreas = ["Specific Details", "Concept Application"];
-            $suggestedFocus = "Review fundamental concepts and study each topic more thoroughly";
-        }
-    }
+    error_log("Database error fetching performance data: " . $e->getMessage());
+}
+
+// If still no challenging questions found, create a meaningful message
+if (empty($challengingQuestions)) {
+    $challengingQuestions = "Complete more quizzes to identify challenging areas";
 }
 
 // Format strengths and weak areas for display
 $strengthsText = implode(", ", $strengths);
 $weakAreasText = implode(", ", $weakAreas);
 
-// Generate challenging questions (in a real implementation, this would come from actual question data)
-$challengingQuestions = "Q" . rand(1, 5) . ", Q" . rand(6, 10) . ", Q" . rand(11, 15);
+
 ?>
 
 <!DOCTYPE html>
@@ -425,7 +359,7 @@ $challengingQuestions = "Q" . rand(1, 5) . ", Q" . rand(6, 10) . ", Q" . rand(11
     </table>
 
     <section class="recommendations-container">
-        <h2 class="recommend-title">Personalized Recommendations</h2>
+        <h2 class="recommend-title">Recommendations</h2>
         
         <div class="recommendations">
             <?php foreach ($recommendations as $rec): ?>
@@ -433,7 +367,7 @@ $challengingQuestions = "Q" . rand(1, 5) . ", Q" . rand(6, 10) . ", Q" . rand(11
                 <div class="star"><i class="fas fa-star"></i></div>
                 <h3><?php echo htmlspecialchars($rec['title']); ?></h3>
                 <p><?php echo htmlspecialchars($rec['desc']); ?></p>
-                <button class="view-btn" <?php if (isset($rec['id'])): ?>onclick="window.location.href='<?php echo $rec['source'] === 'video' ? 'video.php' : 'read.php'; ?>?subject=<?php echo urlencode($rec['subject'] ?? $subject); ?>&<?php echo $rec['source'] === 'video' ? 'video' : 'lesson'; ?>=<?php echo $rec['id']; ?>'"<?php endif; ?>>View</button>
+                <button class="view-btn" <?php if (isset($rec['id'])): ?>onclick="window.location.href='read.php?subject=<?php echo urlencode($subject); ?>&lesson=<?php echo $rec['id']; ?>'"<?php endif; ?>>View</button>
             </div>
             <?php endforeach; ?>
         </div>

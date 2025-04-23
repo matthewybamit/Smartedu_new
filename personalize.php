@@ -48,10 +48,10 @@ $style = $_GET['style'] ?? null;
             <li><a href="dashboard.php">Dashboard</a></li>
             <li>
                 <?php if ($isLoggedIn): ?>
-          
+
                     <a href="logout.php">Log Out</a>
                 <?php else: ?>
-             
+
                     <a href="login.php">Login</a>
                 <?php endif; ?>
             </li>
@@ -72,7 +72,7 @@ $style = $_GET['style'] ?? null;
                 <button class="advanced">Advanced</button>
                 <h3>Deep comprehension & analysis</h3>
             </div>
-            
+
             <div class="c_styles">
                 <img src="photos/2.png"  class="numbertwo">
                 <h2>CHOOSE STYLE</h2>
@@ -80,19 +80,19 @@ $style = $_GET['style'] ?? null;
                 <button class="reading"><img src="photos/reading.png"  alt="button image"></button>
             </div>
         </div>
-   
+
     <footer>
         <ul>
             <li><a href="#">About Us</a></li>
             <li><a href="#">Privacy Policy</a></li>
             <li><a href="#">Terms Of Service</a></li>
             <li><a href="#">FAQs</a></li>
-            
+
         </ul>
         <div class="reserve">&copy; 2025. All Rights Reserved.</div>
     </footer>
 
-    
+
     <script>
      // Toggle burger menu
      const burger = document.getElementById('burger');
@@ -103,20 +103,32 @@ $style = $_GET['style'] ?? null;
 
     let selectedLevel = "";
 
+    function clearSelectedLevel() {
+        document.querySelectorAll('.beginner, .intermediate, .advanced').forEach(btn => {
+            btn.classList.remove('selected');
+        });
+    }
+
     // Get the subject from current page URL
     const subject = new URLSearchParams(window.location.search).get('subject') || "default";
 
     // Level buttons
     document.querySelector(".beginner").addEventListener("click", () => {
+        clearSelectedLevel();
         selectedLevel = "Beginner";
+        document.querySelector(".beginner").classList.add('selected');
     });
 
     document.querySelector(".intermediate").addEventListener("click", () => {
+        clearSelectedLevel();
         selectedLevel = "Intermediate";
+        document.querySelector(".intermediate").classList.add('selected');
     });
 
     document.querySelector(".advanced").addEventListener("click", () => {
+        clearSelectedLevel();
         selectedLevel = "Advanced";
+        document.querySelector(".advanced").classList.add('selected');
     });
 
     // Style buttons
@@ -133,7 +145,7 @@ $style = $_GET['style'] ?? null;
             alert("Please select a level first.");
             return;
         }
-        window.location.href = `video.php?subject=${encodeURIComponent(subject)}&level=${encodeURIComponent(selectedLevel)}&style=video&chapter=1`;
+        window.location.href = `videos_list.php?subject=${encodeURIComponent(subject)}&level=${encodeURIComponent(selectedLevel)}&style=video`;
     });
 
 </script>

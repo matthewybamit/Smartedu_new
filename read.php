@@ -12,8 +12,9 @@ $style = $_GET['style'] ?? null;
 // Get list of lessons directly from the database
 $lessons = [];
 try {
-    $query = $pdo->prepare("SELECT * FROM lessons WHERE subject = :subject ORDER BY id ASC");
+    $query = $pdo->prepare("SELECT * FROM lessons WHERE subject = :subject AND level = :level ORDER BY id ASC");
     $query->bindParam(':subject', $subject);
+    $query->bindParam(':level', $level);
     $query->execute();
     $lessons = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {

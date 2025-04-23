@@ -68,59 +68,7 @@ if ($video) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bigelow+Rules&display=swap" rel="stylesheet">
-    <style>
-        .related-videos {
-            margin-top: 40px;
-        }
-        .related-videos h3 {
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-        }
-        .related-video-item {
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .related-video-item:hover {
-            transform: scale(1.05);
-        }
-        .related-video-item img {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
-        .related-video-item .title {
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        .video-thumbnail {
-            position: relative;
-        }
-        .play-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: #ff5722;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-        }
-        .video-thumbnail:hover .play-button {
-            opacity: 1;
-        }
-    </style>
+   
 </head>
 <body>
 
@@ -175,7 +123,7 @@ if ($video) {
         
         <div class="quiz-section">
             <h2>Ready to test your knowledge?</h2>
-            <a href="quizone.php?source=video&id=<?php echo htmlspecialchars($id); ?>" class="start-quiz-btn">Start Quiz</a>
+            <a href="quizone.php?source=video&id=<?php echo htmlspecialchars($id); ?>&subject=<?php echo htmlspecialchars($video['subject']); ?>" class="start-quiz-btn">Start Quiz</a>
         </div>
 
         <?php if (!empty($relatedVideos)): ?>

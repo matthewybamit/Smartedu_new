@@ -316,16 +316,16 @@ function saveUserRecommendations($pdo, $userEmail, $recommendations) {
     try {
         // Clear existing unviewed recommendations
         $clearStmt = $pdo->prepare("
-            DELETE FROM user_recommendations 
+            DELETE FROM recommendations 
             WHERE user_email = ? AND is_viewed = 0
         ");
         $clearStmt->execute([$userEmail]);
         
         // Insert new recommendations
         $insertStmt = $pdo->prepare("
-            INSERT INTO user_recommendations 
-            (user_email, lesson_id, video_id, recommendation_type, priority, is_viewed, date_created) 
-            VALUES (?, ?, ?, ?, ?, 0, NOW())
+            INSERT INTO recommendations 
+            (user_email, content_type, content_id, priority, is_viewed, date_created) 
+            VALUES (?, ?, ?, ?, 0, NOW())
         ");
         
         foreach ($recommendations as $rec) {

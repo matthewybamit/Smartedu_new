@@ -1,290 +1,162 @@
+
+
 body {
-    font-family: Arial, sans-serif;
-
-        background: linear-gradient(to bottom, #122D64, #82A0DC 90%);
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
 }
 
-header {
-    height: auto;
-    background-color: #122D64;
-    color: #fff;
-    
+main {
+    min-height: calc(100vh - 180px);
 }
 
-
-.image-button {
-    position: absolute;
-    border: none;
-    background-color: transparent;
-    padding: 0;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    left:60px;
-}
-
-.image-button img {
-    width: 50px; /* Adjust size as needed */
-    border-radius: 5px; /* Optional: Rounded corners */
-}
-.logowl {
-    
-    width: 60px;
-    height: auto;
-    margin-left: 10%;
-}
-.logo {
-    font-family: "Bigelow Rules", serif;
-    
-    font-size: 40px ;
-    
-}
-
-.background{
-    height: 900px;
-    display: flex;
-    justify-content: center;
-    
-    
-    background: linear-gradient(to bottom,#122D64, #82A0DC);
+/* Hero Section */
+.styles-hero {
+    background-color: #ff8800;
     color: white;
-}
-
-.modules-txt {
-    position:absolute;
+    padding: 4rem 1rem;
     text-align: center;
-    
-    font-size: 30px;
-    margin-top: 30px;
-    
-}
- .Modules {
-  
-position: absolute;
-background-color: #122D64;
-border-style: solid;
-border-color: black;
-border-width: 2px;
-padding: 330px 580px;
-border-radius: 10px;
-
-margin-right: 50px;
-margin-top: 100px;
- }
-
- .quiz {
-    position:absolute;
-top: 35px;
-right: 230px;
-background-color: transparent;
-font-size: 15px;
-color:white;
-background: none;  /* Removes background color */
-border: none;      /* Removes border/outline */
-outline: none;     /* Removes outline when focused */
-padding: 5px 10px; /* Adjust padding if needed */
-cursor: pointer;   /* Keeps the cursor behavior */
-}
-.assignments {
-    position:absolute;
-    top: 35px;
-    right: 80px;
-    background-color: transparent;
-    font-size: 15px;
-    color:white;
-        background: none;  /* Removes background color */
-        border: none;      /* Removes border/outline */
-        outline: none;     /* Removes outline when focused */
-        padding: 5px 10px; /* Adjust padding if needed */
-        cursor: pointer;   /* Keeps the cursor behavior */
 }
 
-.content {
-    position: absolute;
-    overflow-y: auto; /* Enable scrollbar */
-   
-    padding: 250px  550px;
-    left: 25px;
-    top: 100px;
+.styles-hero-content {
+    max-width: 800px;
+    margin: 0 auto;
 }
-.quiz-content{
-    padding:100px 80px;
-    position:relative;
+
+.styles-hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.styles-hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Subjects Grid */
+.subjects-grid {
+    max-width: 1200px;
+    margin: -2rem auto 3rem;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    position: relative;
+}
+
+.subject-card {
     background-color: white;
     border-radius: 10px;
-}
-.quiz-content h1{
-   position: absolute;
-    bottom: -25px; /* Adjusted to center vertically */
-    left: 50%; /* Center horizontally */
-    transform: translate(-50%, 50%); /* Center alignment */
-    color: white;
-    font-size: 15px;
-    white-space: nowrap; 
-}
-.grid-content {
-    position:absolute;
-    display: grid;
-    grid-template-columns:auto auto auto auto auto;
-    grid-gap:70px 50px;
-    padding: 5px;
-    top: 5px;
-    left: 45px;
-} 
-/* Custom Scrollbar */
-.content::-webkit-scrollbar {
-    width: 8px;
-}
-
-.content::-webkit-scrollbar-thumb {
-    background: #C97920;
-    border-radius: 4px;
-}
-
-.content::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-footer {
-    background: #333;
-    color: white;
-    padding: 20px;
+    padding: 2rem;
     text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
 }
 
-footer ul {
-    list-style: none;
+.subject-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.subject-icon {
+    width: 70px;
+    height: 70px;
+    background-color: #ff88001a;
+    color: #ff8800;
+    border-radius: 50%;
     display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 30px; /* Space between links */
-    padding: 0;
-    margin: 0;
+    margin: 0 auto 1.5rem;
 }
 
-/* Ensure no extra margin/padding on list items */
-footer ul li {
-    display: inline;
-    margin: 0;
-    padding: 0;
+.subject-icon svg {
+    width: 35px;
+    height: 35px;
 }
 
-footer ul li a {
-    color: white;
-    text-decoration: none;
-    padding: 5px 10px; /* Add padding for touch targets */
+.subject-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #333;
 }
 
-@media screen and (max-width: 768px) {
-    footer ul {
-        flex-direction: column; /* Stack items vertically */
-        align-items: center;
-        gap: 5px; /* Reduce space for mobile */
-    }
+.subject-card p {
+    color: #666;
+    font-size: 0.9rem;
+}
 
-    footer ul li a {
-        padding: 3px 8px; /* Reduce padding */
-        font-size: 2px; /* Adjust font size for smaller screens */
+/* Why Choose Section */
+.why-choose {
+    background-color: #fff;
+    padding: 3rem 1rem;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 50px;
+}
+
+.why-choose-content {
+    max-width: 600px;
+}
+
+.why-choose h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.why-choose p {
+    color: #555;
+    font-size: 1rem;
+}
+
+.owl-mascot img {
+    width: 200px;
+    height: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .subjects-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        background-color: #122D64;
+}
+
+@media (max-width: 768px) {
+    .styles-hero h1 {
+        font-size: 2rem;
     }
-    .Modules {
-  
-        position: absolute;
-        background-color: #122D64;
-        padding: 95% 56%;  
-        border:none; 
-        border-radius: 0px;
-         }
-         .modules-txt {
-            position:absolute;
-            left:10px;
-            
-            font-size: 24px;
-            margin-top: 35px;
-            
-        }
-         .quiz {
-            
-            position:absolute;
-        top: -65px;
-        right: 130px;
-        background-color: transparent;
-        font-size: 15px;
-        color:white;
-        background: none;  /* Removes background color */
-        border: none;      /* Removes border/outline */
-        outline: none;     /* Removes outline when focused */
-        padding: 5px 10px; /* Adjust padding if needed */
-        cursor: pointer;   /* Keeps the cursor behavior */
-        }
-        .assignments {
-            
-            position:absolute;
-            top: -65px;
-            right: 20px;
-            background-color: transparent;
-            font-size: 15px;
-            color:white;
-                background: none;  /* Removes background color */
-                border: none;      /* Removes border/outline */
-                outline: none;     /* Removes outline when focused */
-                padding: 5px 10px; /* Adjust padding if needed */
-                cursor: pointer;   /* Keeps the cursor behavior */
-        }
-        
-        .content {
-            
-            position: absolute;
-            overflow-y: auto; /* Enable scrollbar */
-           
-            padding: 85% 47%;
-            top:0px;
-            
-        }
-        .quiz-content{
-            
-            padding:90px 70px;
-            position:relative;
-            background-color: white;
-            border-radius: 10px;
-        }
-        .quiz-content h1{
-            
-           position: absolute;
-            bottom: -25px; /* Adjusted to center vertically */
-            left: 50%; /* Center horizontally */
-            transform: translate(-50%, 50%); /* Center alignment */
-            color: white;
-            font-size: 12px;
-            white-space: nowrap; 
-        }
-        .grid-content {
-            
-            position:absolute;
-            display: grid;
-            grid-template-columns:auto auto;
-            grid-gap:45px;
-            padding: 5px;
-            top: 20px;
-            left: 45px;
-        } 
-        /* Custom Scrollbar */
-        .content::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .content::-webkit-scrollbar-thumb {
-            background: #C97920;
-            border-radius: 4px;
-        }
-        
-        .content::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
+    
+    .styles-hero p {
+        font-size: 1rem;
+    }
+    
+    .why-choose {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .subjects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .subject-card {
+        padding: 1.5rem;
+    }
+    
+    .styles-hero {
+        padding: 3rem 1rem;
+    }
 }

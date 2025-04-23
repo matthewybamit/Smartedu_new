@@ -222,7 +222,11 @@ try {
                                                 <span class="level"><?php echo htmlspecialchars($rec['level']); ?></span>
                                             </div>
                                             <p class="rec-desc"><?php echo htmlspecialchars($rec['description']); ?></p>
-                                            <a href="<?php echo $rec['type'] === 'lesson' ? 'read.php?subject=' . urlencode($rec['subject']) : 'video.php?subject=' . urlencode($rec['subject']); ?>" class="rec-button">Start Learning</a>
+                                            <?php if ($rec['type'] === 'video'): ?>
+                                <a href="video.php?id=<?php echo urlencode($rec['id']); ?>" class="rec-button">Start Learning</a>
+                            <?php else: ?>
+                                <a href="read.php?subject=<?php echo urlencode($rec['subject']); ?>&lesson=<?php echo urlencode($rec['id']); ?>" class="rec-button">Start Learning</a>
+                            <?php endif; ?>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
