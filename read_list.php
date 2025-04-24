@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 include 'php_functions/db_connection.php';
@@ -64,10 +63,22 @@ try {
             width: 100%;
             height: 180px;
             background-color: #f5f5f5;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .lesson-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .no-cover {
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 48px;
+            height: 100%;
         }
         
         .lesson-info {
@@ -138,6 +149,8 @@ try {
         </nav>
     </header>
 
+                    <!-- admin/uploads/covers/ this is for later use-->
+
     <div class="lessons-container">
         <h1><?php echo htmlspecialchars($subject); ?> Reading Lessons</h1>
         <h2><?php echo htmlspecialchars($level); ?> Level</h2>
@@ -147,7 +160,11 @@ try {
                 <?php foreach ($lessons as $lesson): ?>
                     <div class="lesson-card">
                         <div class="lesson-thumbnail">
-                            📚
+                            <?php if (!empty($lesson['cover_photo'])): ?>
+                                <img src="<?php echo htmlspecialchars($lesson['cover_photo']); ?>" alt="<?php echo htmlspecialchars($lesson['title']); ?> cover">
+                            <?php else: ?>
+                                <div class="no-cover">📚</div>
+                            <?php endif; ?>
                         </div>
                         <div class="lesson-info">
                             <div class="lesson-title"><?php echo htmlspecialchars($lesson['title']); ?></div>

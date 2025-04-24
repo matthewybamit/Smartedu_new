@@ -141,7 +141,7 @@ try {
                     <div id="lessons-grid" class="grid-grid">
                         <?php if (!empty($lesson)): ?>
                             <div class="chapter lesson-item active" data-id="<?php echo $lesson['id']; ?>" data-index="0">
-                                <h2>01</h2>
+                          
                                 <h3><?php echo htmlspecialchars($lesson['title']); ?></h3>
                             </div>
                         <?php else: ?>
@@ -159,7 +159,7 @@ try {
 
                 <!-- Title and Number -->
                 <div id="lesson-title" class="scroll-read">
-                    <h2>01</h2>
+                 
                     <h1><?php echo !empty($lesson) ? htmlspecialchars($lesson['title']) : 'No Lesson Selected'; ?></h1>
                     <p></p>
                 </div>

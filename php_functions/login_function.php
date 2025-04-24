@@ -2,7 +2,15 @@
 // login_function.php
 session_start(); // Must be the very first statement
 
-include 'db_connection.php'; // Include your database connection
+include 'db_connection.php';
+
+// Check if database connection exists after including the file
+if (!isset($conn) && isset($pdo)) {
+    $conn = $pdo; // Use $pdo if that's what your db_connection.php creates
+} else if (!isset($conn)) {
+    // If no connection variable exists, display an error
+    die("Database connection not established. Check db_connection.php");
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve the input from the login form
@@ -17,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($query->rowCount() > 0) {
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-        // Verify password
-        if (password_verify($password, $user['password'])) {
+        // Verify password - changed 'password' to 'password_hash' to match your database column
+        if (password_verify($password, $user['password_hash'])) {
             // Set session variables
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['email'] = $user['email'];
