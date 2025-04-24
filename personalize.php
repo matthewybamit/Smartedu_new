@@ -65,11 +65,11 @@ $style = $_GET['style'] ?? null;
             <div class="levels">
                 <img src="photos/1.png" class="a1">
                 <h2>SELECT LEVEL</h2>
-                <button class="beginner">Beginner</button>
+                <button class="levelbuttons beginner">Beginner</button>
                 <h3>Basics & guidance</h3>
-                <button class="intermediate">Intermediate</button>
+                <button class="levelbuttons intermediate">Intermediate</button>
                 <h3>Fundamentals & problem-solving</h3>
-                <button class="advanced">Advanced</button>
+                <button class="levelbuttons advanced">Advanced</button>
                 <h3>Deep comprehension & analysis</h3>
             </div>
             
@@ -109,6 +109,17 @@ $style = $_GET['style'] ?? null;
         });
     }
 
+
+    document.addEventListener("DOMContentLoaded", function () {
+          const levelButtons = document.querySelectorAll('.levelbuttons');
+      
+          levelButtons.forEach(button => {
+            button.addEventListener('click', () => {
+              levelButtons.forEach(btn => btn.classList.remove('active'));
+              button.classList.add('active');
+            });
+          });
+        });
     // Get the subject from current page URL
     const subject = new URLSearchParams(window.location.search).get('subject') || "default";
 
@@ -147,8 +158,10 @@ $style = $_GET['style'] ?? null;
         }
         window.location.href = `videos_list.php?subject=${encodeURIComponent(subject)}&level=${encodeURIComponent(selectedLevel)}&style=video`;
     });
-
+    
+   
 </script>
+
 
 </body>
 </html>

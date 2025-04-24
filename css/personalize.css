@@ -9,7 +9,23 @@ header {
     color: #fff;
     
 }
+.levels, .c_styles {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+.levels:hover, .c_styles:hover {
+    transform: scale(1.13);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.levelbuttons:hover {
+    background-color: #ff8800; /* Darker shade on hover */
+    color:black;
+}
+.levelbuttons.active {
+    background-color: #ff8800; /* Darker shade on hover */
+    color:black;
+}
 
 .image-button {
     position: absolute;
@@ -59,7 +75,7 @@ header {
     position: absolute;
     width: 392px;
     height: 476px;
-    left: 20px;
+    left: 320px;
     top: 233px;
     background: #F0F1F3;
     border-radius: 10px;
@@ -70,7 +86,7 @@ header {
     position: absolute;
     width: 392px;
     height: 476px;
-    left: 443px;
+    right: 320px;
     top: 233px;
     background: #F0F1F3;
     border-radius: 10px;
@@ -138,7 +154,7 @@ h3:nth-of-type(2) {      /* Second <h3> */
 h3:nth-of-type(3) {      /* Third <h3> */
     top: 210px;          /* Adjust position */
 }
-.levels button{
+.levelbuttons{
     font-size: 30px;
     background-color: #122D64;
     color: white;
@@ -149,6 +165,7 @@ h3:nth-of-type(3) {      /* Third <h3> */
     position: absolute;         /* Make buttons absolute */
     left: 50%;
     transform: translateX(-50%);
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 .beginner { top: 120px; }        /* Position each button individually */
 .intermediate { top: 235px; }

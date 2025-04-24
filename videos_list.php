@@ -41,12 +41,19 @@ try {
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bigelow+Rules&display=swap" rel="stylesheet">
 </head>
     <style>
+        body{
+            background-color:#f5f5f5;
+        }
         .videos-container {
             max-width: 1200px;
+            max-height: 600px;
             margin: 40px auto;
             padding: 20px;
         }
-        
+        h1 {
+            margin-left:30%;
+        }
+      
         .videos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -55,11 +62,14 @@ try {
         }
         
         .video-card {
+            width: 1000px;
+            height: 520px;
             background: #fff;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 9px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
+            margin-left: 30%;
         }
         
         .video-card:hover {
@@ -68,7 +78,7 @@ try {
         
         .video-thumbnail {
             width: 100%;
-            height: 180px;
+            height: 380px;
             object-fit: cover;
         }
         
