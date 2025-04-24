@@ -216,11 +216,11 @@ $questionsJSON = json_encode($quizQuestions);
             <button class="quiz-option" data-index="3">D. Loading...</button>
         </div>
         <div class="quiz-navigation">
-            <button class="nav-btn left-btn" id="prev-btn" disabled></button>
+        
             <div class="circle-check" id="submit-btn">
                 <i class="fas fa-check"></i>
             </div>
-            <button class="nav-btn right-btn" id="next-btn" disabled></button>
+          
         </div>
         <div class="quiz-result" id="result-container" style="display: none;">
             <h2>Quiz Complete!</h2>

@@ -199,6 +199,7 @@ foreach ($modules as $module) {
     <link rel="stylesheet" href="css/recommendation_cards.css">
     <script defer src="js/carouselvid.js"></script>
     <script defer src="js/videoHandler.js"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
@@ -327,11 +328,32 @@ foreach ($modules as $module) {
     </div>
     <?php endif; ?>
     <?php endif; ?>
-
-    <div class="search-bar">
-        <input type="text" placeholder="Search..." id="searchInput">
-        <button><img src="photos/search.png" alt="Search"></button>
+    
+    <?php if ($isLoggedIn && !isset($clusterInfo)): ?>
+    <div class="cluster-notice">
+        <div class="notice-content">
+            <h3> Complete Your Learning Profile!</h3>
+            <p>Take a quick quiz to help us personalize your learning experience. This will allow us to:</p>
+            <ul>
+                <li>Recommend content tailored to your needs</li>
+                <li>Match you with similar learners</li>
+                <li>Track your progress effectively</li>
+            </ul>
+     
+        </div>
     </div>
+    <?php endif; ?>
+
+    <div class="search-and-sort">
+        <div class="search-bar">
+            <input type="text" placeholder="Search..." id="searchInput">
+            <button><img src="photos/search.png" alt="Search"></button>
+        </div>
+        <div class="sort-controls">
+
+        </div>
+    </div>
+
 
     <?php if ($isLoggedIn && !empty($preferredSubjects)): ?>
     <!-- Display preferred subjects message -->
@@ -490,7 +512,7 @@ foreach ($modules as $module) {
                     <div class="books-grid">
                         <?php foreach ($modulesBySubject[$subject] as $module): ?>
                             <div class="book-item" onclick="window.location.href='read.php?subject=<?php echo urlencode($module['subject']); ?>&lesson=<?php echo $module['id']; ?>'">
-                                <img src="<?php echo !empty($module['cover_photo']) ? htmlspecialchars($module['cover_photo']) : 'https://via.placeholder.com/150x200'; ?>" alt="<?php echo htmlspecialchars($module['title']); ?> Cover" class="book-cover" style="width: 150px; height: 200px;">
+                                <img src="admin/<?php echo !empty($module['cover_photo']) ? htmlspecialchars($module['cover_photo']) : 'https://via.placeholder.com/150x200'; ?>" alt="<?php echo htmlspecialchars($module['title']); ?> Cover" class="book-cover" style="width: 150px; height: 200px;">
                                 <p><?php echo htmlspecialchars($module['title']); ?></p>
                                 <span class="module-level"><?php echo htmlspecialchars($module['level']); ?></span>
                             </div>
@@ -511,7 +533,7 @@ foreach ($modules as $module) {
                     <div class="books-grid">
                         <?php foreach ($subjectModules as $module): ?>
                             <div class="book-item" onclick="window.location.href='read.php?subject=<?php echo urlencode($module['subject']); ?>&lesson=<?php echo $module['id']; ?>'">
-                                <img src="<?php echo !empty($module['cover_photo']) ? htmlspecialchars($module['cover_photo']) : 'https://via.placeholder.com/150x200'; ?>" alt="<?php echo htmlspecialchars($module['title']); ?> Cover" class="book-cover" style="width: 150px; height: 200px;">
+                                <img src="admin/<?php echo !empty($module['cover_photo']) ? htmlspecialchars($module['cover_photo']) : 'https://via.placeholder.com/150x200'; ?>" alt="<?php echo htmlspecialchars($module['title']); ?> Cover" class="book-cover" style="width: 150px; height: 200px;">
                                 <p><?php echo htmlspecialchars($module['title']); ?></p>
                                 <span class="module-level"><?php echo htmlspecialchars($module['level']); ?></span>
                             </div>

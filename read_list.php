@@ -161,7 +161,7 @@ try {
                     <div class="lesson-card">
                         <div class="lesson-thumbnail">
                             <?php if (!empty($lesson['cover_photo'])): ?>
-                                <img src="<?php echo htmlspecialchars($lesson['cover_photo']); ?>" alt="<?php echo htmlspecialchars($lesson['title']); ?> cover">
+                                <img src="admin/<?php echo htmlspecialchars($lesson['cover_photo']); ?>" alt="<?php echo htmlspecialchars($lesson['title']); ?> cover">
                             <?php else: ?>
                                 <div class="no-cover">📚</div>
                             <?php endif; ?>

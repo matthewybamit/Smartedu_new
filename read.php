@@ -20,10 +20,11 @@ try {
     $query->execute();
     $lesson = $query->fetch(PDO::FETCH_ASSOC);
 
-    if (!$lesson) {
-        header('Location: read_list.php');
-        exit;
-    }
+    if ($lesson) {
+        // Increment view count
+        require_once 'php_functions/track_views.php';
+        incrementViews($lessonId, 'reading');
+    } 
 
     // Get related lessons from the same subject (excluding current lesson)
     $relatedQuery = $pdo->prepare("

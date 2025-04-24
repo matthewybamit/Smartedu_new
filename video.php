@@ -23,7 +23,9 @@ if ($id > 0) {
             $video = $query->fetch(PDO::FETCH_ASSOC);
             $title = $video['title'];
             $description = $video['description'];
-            
+             // Increment view count
+             require_once 'php_functions/track_views.php';
+             incrementViews($id, 'video');
             // Extract YouTube video ID from URL
             if (preg_match('/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $video['youtube_url'], $matches)) {
                 $videoId = $matches[1];

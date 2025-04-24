@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'config.php';
+include 'php_functions/db_connection.php';
 $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
 ?>
 
@@ -20,7 +21,68 @@ $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bigelow+Rules&display=swap" rel="stylesheet">
 </head>
+<style>/* Popular Topics Styles */
+.topics-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
 
+.topic-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.topic-card:hover {
+    transform: translateY(-5px);
+}
+
+.star {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stars {
+    width: 20px;
+    height: 20px;
+}
+
+.topic-card h3 {
+    margin: 10px 0;
+    color: #333;
+}
+
+.topic-card p {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.view-btn {
+    background: #ff8800;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s;
+}
+
+.view-btn:hover {
+    background: #e67a00;
+}
+
+.btn-align {
+    text-align: right;
+}
+</style>
 <body>
 <header>
     <nav>
@@ -111,34 +173,58 @@ $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
             <div class="container2">
                 <div class="pt">Popular Topics</div>
                 <div class="topics-container">
-                    <div class="topic-card">
-                        <span class="star"><img src="photos/star-fill.png" class="stars"></span>
-                        <h3>HTML/CSS</h3>
-                        <p>Lorem ipsum dolor sit amet</p>
-                        <div class="btn-align"><button class="view-btn">View</button></div>
-                    </div>
-                    <div class="topic-card">
-                        <span class="star"><img src="photos/star-fill.png" class="stars"></span>
-                        <h3>JAVASCRIPT</h3>
-                        <p>Lorem ipsum dolor sit amet</p>
-                        <div class="btn-align"><button class="view-btn">View</button></div>
-                    </div>
-                    <div class="topic-card">
-                        <span class="star"><img src="photos/star-fill.png" class="stars"></span>
-                        <h3>SWIFT</h3>
-                        <p>Lorem ipsum dolor sit amet</p>
-                        <div class="btn-align"><button class="view-btn">View</button></div>
-                    </div>
-                    <div class="topic-card">
-                        <span class="star"><img src="photos/star-fill.png" class="stars"></span>
-                        <h3>PYTHON</h3>
-                        <p>Lorem ipsum dolor sit amet</p>
-                        <div class="btn-align"><button class="view-btn">View</button></div>
-                    </div>
+                <?php
+try {
+    // Get popular lessons from both video and reading content
+    $popular_query = "
+        (SELECT id, title, description, subject, 'video' as type, view_count, thumbnail_url as image_url
+         FROM video_lessons 
+         ORDER BY view_count DESC 
+         LIMIT 2)
+        UNION ALL
+        (SELECT id, title, description, subject, 'reading' as type, view_count, cover_photo as image_url
+         FROM lessons 
+         ORDER BY view_count DESC 
+         LIMIT 2)
+        ORDER BY view_count DESC
+        LIMIT 4
+    ";
+
+    $stmt = $pdo->query($popular_query);
+    $popular_topics = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($popular_topics as $topic) {
+        $link = $topic['type'] === 'video' ? 
+               "video.php?id=" . $topic['id'] : 
+               "read.php?lesson=" . $topic['id'];
+        
+        // Determine icon class based on content type
+        $icon_class = $topic['type'] === 'video' ? 'fa-video' : 'fa-book';
+        $button_text = $topic['type'] === 'video' ? 'Watch' : 'Read';
+        ?>
+        <div class="topic-card">
+            <span class="star">
+                <img src="photos/star-fill.png" class="stars" alt="star">
+                <i class="fas <?php echo $icon_class; ?>"></i>
+            </span>
+            <h3><?php echo htmlspecialchars($topic['title']); ?></h3>
+            <p><?php echo htmlspecialchars(substr($topic['description'], 0, 50)) . '...'; ?></p>
+            <div class="btn-align">
+                <a href="<?php echo $link; ?>" class="view-btn">
+                    <?php echo $button_text; ?>
+                </a>
+            </div>
+        </div>
+        <?php
+    }
+} catch (PDOException $e) {
+    error_log("Error fetching popular topics: " . $e->getMessage());
+}
+?>
                 </div>
 
                 <div class="vmore">
-                    <div class="view-more">View More</div>
+                    <div class="view-more"> <a href="styles.php">View More</a></div>
                 </div>
 
                 <div class="customization-section">
