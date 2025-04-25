@@ -5,14 +5,28 @@ include 'php_functions/db_connection.php';
 
 $isLoggedIn = isset($_SESSION['email']) || isset($_SESSION['user_email']);
 
-// Get the values from the URL (query string)
+// Get the lesson ID from URL
+// Get the lesson ID from URL
+$lessonId = $_GET['lesson'] ?? null;
 $subject = $_GET['subject'] ?? null;
-$level = $_GET['level'] ?? null;
-$style = $_GET['style'] ?? null;
 
 // Get specific lesson from database
 $lesson = null;
-$lessonId = $_GET['lesson'] ?? null;
+try {
+    if ($lessonId) {
+        $query = $pdo->prepare("SELECT * FROM lessons WHERE id = ?");
+        $query->execute([$lessonId]);
+        $lesson = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($lesson) {
+            // Increment view count
+            require_once 'php_functions/track_views.php';
+            incrementViews($lessonId, 'reading');
+        }
+    }
+} catch (PDOException $e) {
+    error_log("Error fetching lesson: " . $e->getMessage());
+}
 
 try {
     $query = $pdo->prepare("SELECT * FROM lessons WHERE id = :id");
@@ -40,6 +54,8 @@ try {
 } catch (PDOException $e) {
     error_log("Error fetching lesson: " . $e->getMessage());
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -231,7 +247,7 @@ try {
     // Handle Start Quiz button
     document.getElementById('startQuizBtn').addEventListener('click', function() {
         if (currentLessonId) {
-            window.location.href = `quizone.php?source=read&subject=${encodeURIComponent('<?php echo $subject; ?>')}&lesson=${currentLessonId}`;
+            window.location.href = `quizone.php?source=read&subject=${encodeURIComponent('<?php echo $subject; ?>')}&lesson=${currentLessonId}&id=${currentLessonId}`;
         } else {
             alert("Please select a lesson.");
         }

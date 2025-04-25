@@ -94,7 +94,54 @@ try {
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bigelow+Rules&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
+<style>.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
 
+.activity-item.clickable {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    padding-right: 2.5rem;
+}
+
+.activity-item.clickable:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.activity-arrow {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff8800;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.activity-item.clickable:hover .activity-arrow {
+    opacity: 1;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.see-all-link {
+    display: block;
+    text-align: right;
+    margin-top: 1rem;
+    color: #ff8800;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.see-all-link:hover {
+    text-decoration: underline;
+}</style>
 <body>
     <header>
         <nav>
@@ -182,7 +229,8 @@ try {
                         <?php else: ?>
                             <div class="activity-list">
                                 <?php foreach($recentQuizzes as $quiz): ?>
-                                    <div class="activity-item">
+                                            <div class="activity-item" onclick="window.location.href='<?php echo $quiz['source'] === 'video' ? 'video.php?id=' : 'read.php?lesson='; ?><?php echo $quiz['content_id']; ?>'">
+                                     
                                         <div class="activity-icon">
                                             <i class="<?php echo $quiz['source'] === 'reading' ? 'fas fa-book' : 'fas fa-video'; ?>"></i>
                                         </div>
@@ -193,13 +241,18 @@ try {
                                                 <span class="date"><?php echo date('M j, Y', strtotime($quiz['date_completed'])); ?></span>
                                             </div>
                                         </div>
+                                        
                                     </div>
+                                    
                                 <?php endforeach; ?>
                             </div>
-                        <?php endif; ?>
+                           <?php endif; ?>
+                           <div>
+                            <a href="quiz_history.php" class="see-all-link">See all activities <i class="fas fa-arrow-right"></i></a>
+                            </div>
                     </div>
                 </div>
-
+          
                 <!-- Right Column -->
                 <div class="dashboard-column">
                     <div class="dashboard-card recommendations">
@@ -291,7 +344,7 @@ try {
             </div>
         </div>
     </main>
-
+                      
     <footer>
         <ul>
             <li><a href="#">About Us</a></li>
