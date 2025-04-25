@@ -531,7 +531,7 @@ $weakAreasText = implode(", ", $weakAreas);
         </a>
     </div>
     <div class="quiz-header">
-        <h1>QUIZ INSIGHT BOARD</h1>
+        <h1>QUIZs INSIGHT BOARD</h1>
         <div class="congrats-section">
             <h2>CONGRATS!</h2>
             <p>You Just Completed</p>

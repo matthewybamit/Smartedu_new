@@ -1,11 +1,11 @@
 :root {
     --color-primary: #122d64;
     --color-secondary: #82a0dc;
-    --color-accent: #c97920;
+    --color-accent: #ff8800;
     --color-bg-start: #122d64;
     --color-bg-end: #82a0dc;
     --color-surface: #ffffff;
-    --color-text: #333333;
+    --color-text: white;
     --font-title: 'Bigelow Rules', cursive;
     --font-base: 'Manrope', Arial, sans-serif;
     --border-radius: 0.5rem;
@@ -75,16 +75,20 @@
   
   /* Header */
   .quiz-header h1 {
+    letter-spacing: 0.2rem;
     font-family: var(--font-title);
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
+    color: white;
   }
   .congrats-section h2 {
+    font-weight: bold;
     font-size: 2rem;
     color: var(--color-accent);
     margin-bottom: 0.25rem;
   }
   .congrats-section p {
+    color: white;
     font-size: 1.25rem;
     margin: 0.25rem 0;
   }
