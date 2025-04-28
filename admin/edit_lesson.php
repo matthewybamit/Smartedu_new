@@ -281,14 +281,14 @@ if (isset($_GET['success'])) {
                                         <td><?php echo htmlspecialchars($quiz['description'] ?? ''); ?></td>
                                         <td><?php echo $quiz['total_points']; ?></td>
                                         <td>
-                                            <a href="edit_quiz.php?id=<?php echo $quiz['id']; ?>" class="btn btn-primary">
+                                            <a href="edit_quiz.php?id=<?php echo $quiz['id']; ?>" class="btn btn-primary pedit_les">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
                                             <form method="post" action="manage_quizzes.php" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this quiz?');">
                                                 <input type="hidden" name="action" value="delete_quiz">
                                                 <input type="hidden" name="quiz_id" value="<?php echo $quiz['id']; ?>">
                                                 <input type="hidden" name="lesson_id" value="<?php echo $lessonData['id']; ?>">
-                                                <button type="submit" class="btn btn-danger">
+                                                <button type="submit" class="btn btn-danger edit_lesson">
                                                     <i class="fas fa-trash-alt"></i> Delete
                                                 </button>
                                             </form>

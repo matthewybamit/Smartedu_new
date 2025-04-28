@@ -97,15 +97,27 @@ select {
 }
 
 .btn-secondary {
+    margin-left: 20px;
     background-color: #F4A52A;
     color: white;
 }
 
 .btn-danger {
+    margin-left: 30px;
     background-color: #dc3545;
     color: white;
 }
-
+.lesson {
+    margin-left: 260px;
+}
+.edit_lesson {
+    margin-right: 30px;
+    margin-top: 30px;
+    
+}
+.pedit_les {
+    margin-left: 20px;
+}
 /* Row layouts */
 .row {
     display: flex;

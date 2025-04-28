@@ -118,7 +118,7 @@ if (isset($_GET['success'])) {
                                         <form method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this lesson?');">
                                             <input type="hidden" name="action" value="delete_lesson">
                                             <input type="hidden" name="lesson_id" value="<?php echo $lesson['id']; ?>">
-                                            <button type="submit" class="btn btn-danger">
+                                            <button type="submit" class="btn btn-danger lesson">
                                                 <i class="fas fa-trash-alt"></i> Delete
                                             </button>
                                         </form>

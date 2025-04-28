@@ -1,6 +1,6 @@
 <div class="sidebar" id="sidebar">
     <ul class="sidebar__menu">
-        <div class="logo"><img src="photos/blue.png" class="blue1"></div>
+        <div class="logo"><img src="../photos/blue.png" class="blue1"></div>
         <li class="sidebar__item">
             <a href="admin_dashboard.php" class="sidebar__link">
                 <i class="fas fa-home"></i>
@@ -27,17 +27,6 @@
                 <li><a href="manage_quizzes.php" class="sidebar__submenu-link">Manage Quizzes</a></li>
             </ul>
         </li>
-        <li class="sidebar__item">
-            <a href="materials.php" class="sidebar__link">
-                <i class="fas fa-file-alt"></i>
-                <span class="sidebar__text">Materials</span>
-            </a>
-        </li>
-        <li class="sidebar__item">
-            <a href="settings.php" class="sidebar__link">
-                <i class="fas fa-cog"></i>
-                <span class="sidebar__text">Settings</span>
-            </a>
-        </li>
+       
     </ul>
 </div>
