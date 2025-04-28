@@ -1,6 +1,5 @@
 /* Recommendation Cards Styling */
-.recommendations-section,
-.recommendations-container {
+.recommendations-section{
     background-color: #f5f5f5;
     border-radius: 10px;
     padding: 2rem;
@@ -249,3 +248,124 @@
         gap: 0.75rem;
     }
 }
+
+.recommendations-container {
+    width: 85%; /* Set container width to 70% */
+    margin: 20px auto 40px auto;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    scrollbar-width: thin;
+    scrollbar-color: orange transparent;
+  }
+  
+  .recommendations-grid {
+    display: flex; /* Change from grid to flex for horizontal layout */
+    flex-wrap: nowrap; /* Prevent wrapping to next line */
+    gap: 20px;
+    padding-bottom: 15px; /* Add padding for scrollbar */
+    min-width: min-content; /* Ensure cards don't shrink below min width */
+  }
+  
+  .topic-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    flex: 0 0 250px; /* Fixed width for each card */
+  }
+  
+  .topic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .topic-card .star {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .topic-card .stars {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .topic-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .topic-card .rec-subject {
+    color: #666;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+  
+  .topic-card .rec-desc {
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .topic-card .btn-align {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .topic-card .view-btn {
+    background-color: #ff7f3f;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+  
+  .topic-card .view-btn:hover {
+    background-color: #e66a28;
+  }
+  
+  /* Priority styling */
+  .topic-card.high-priority { 
+    border-left: 4px solid #4CAF50;
+  }
+  
+  .topic-card.medium-priority {
+    border-left: 4px solid #2196F3;
+  }
+  
+  /* Custom scrollbar styling */
+  .recommendations-container::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .recommendations-container::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 4px;
+  }
+  
+  .recommendations-container::-webkit-scrollbar-thumb {
+    background: orange;
+    border-radius: 4px;
+  }
+  
+  .recommendations-container::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
+  }
+  
+  @media (max-width: 768px) {
+    .recommendations-container {
+      width: 90%; /* Wider on smaller screens */
+    }
+  }

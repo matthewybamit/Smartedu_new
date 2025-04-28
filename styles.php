@@ -368,6 +368,90 @@ foreach ($modules as $module) {
         </p>
     </div>
     <?php endif; ?>
+<h2>Recommended For You</h2>
+<?php
+// Include recommendation engine
+include_once 'php_functions/recommendation_engine.php';
+
+// Get recommendations for the current user
+$userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : $_SESSION['user_email'];
+$recommendations = [];
+
+try {
+    // Create database connection if not already available
+    if (!isset($pdo)) {
+        include 'php_functions/db_connection.php';
+    }
+    
+    // Get personalized recommendations
+    $recommendations = generateUserRecommendations($pdo, $userEmail, 8);
+    
+    // Check if we got any recommendations
+    if (empty($recommendations)) {
+        // Fallback to basic recommendations
+        $recommendations = getBasicRecommendations($pdo, 8);
+    }
+    
+    // Save recommendations to database (commented out as optional)
+    // saveUserRecommendations($pdo, $userEmail, $recommendations);
+    
+} catch (Exception $e) {
+    error_log("Error getting recommendations: " . $e->getMessage());
+}
+
+// Display recommendations if we have any
+if (!empty($recommendations)) {
+?>
+<div class="recommendations-container">
+    <div class="recommendations-grid">
+        <?php foreach ($recommendations as $rec): 
+            // Determine link based on content type
+            $link = $rec['type'] === 'video' ? 
+                   "video.php?&id=" . $rec['id'] : 
+                   "read.php?subject=" . urlencode($rec['subject']) . "&lesson=" . $rec['id'];
+            
+            // Determine icon class based on content type
+            $icon_class = $rec['type'] === 'video' ? 'fa-video' : 'fa-book';
+            $button_text = $rec['type'] === 'video' ? 'Watch Now' : 'Read Now';
+            
+            // Extract difficulty level
+            $level = isset($rec['level']) ? $rec['level'] : 'Beginner';
+            
+            // Determine color class based on priority
+            $priority_class = '';
+            if (isset($rec['priority'])) {
+                if ($rec['priority'] == 1) $priority_class = 'high-priority';
+                else if ($rec['priority'] == 2) $priority_class = 'medium-priority';
+            }
+        ?>
+        <div class="topic-card <?php echo $priority_class; ?>">
+            <span class="star">
+                <img src="photos/star-fill.png" class="stars" alt="star">
+                <i class="fas <?php echo $icon_class; ?>"></i>
+            </span>
+            <h3><?php echo htmlspecialchars($rec['title']); ?></h3>
+            <p class="rec-subject"><?php echo htmlspecialchars($rec['subject']); ?> • <?php echo htmlspecialchars($level); ?></p>
+            <p class="rec-desc"><?php echo htmlspecialchars(substr($rec['description'], 0, 100)) . '...'; ?></p>
+            <div class="btn-align">
+                <a href="<?php echo $link; ?>" class="view-btn">
+                    <?php echo $button_text; ?>
+                </a>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+<!-- Add some additional CSS for the recommendations -->
+<?php 
+} else {
+?>
+<div class="no-recommendations">
+    <p>No personalized recommendations available at this time. Complete some quizzes to get started!</p>
+</div>
+<?php 
+}
+?>
 
     <h2>VIDEOS</h2>
 
@@ -490,8 +574,7 @@ foreach ($modules as $module) {
         </div>
     <?php endif; ?>
 
-    <div class="booktitle">MODULES</div>
-
+<h2>MODULES</h2>
     <?php if (!empty($modulesBySubject)): ?>
         <div class="books-container">
             <?php 
