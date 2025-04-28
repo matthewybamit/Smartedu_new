@@ -88,10 +88,10 @@ overflow: hidden;
 /* Form Styles */
 .row {
     
-    margin-left: 2.5%;
+    margin-left: 4%;
     display: flex;
     justify-content: space-between;
-    margin-right: 14%;
+    margin-right: 17.5%;
     
    
 }
@@ -106,6 +106,7 @@ overflow: hidden;
     margin-left: 42%;
 }
 #lname {
+
     width: 200px;
 }
 #fname {
