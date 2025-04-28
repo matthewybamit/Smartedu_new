@@ -574,9 +574,10 @@ if (!empty($recommendations)) {
         </div>
     <?php endif; ?>
 
-<h2>MODULES</h2>
+
     <?php if (!empty($modulesBySubject)): ?>
         <div class="books-container">
+        <h2>MODULES</h2>
             <?php 
             // Display preferred subjects first
             $displayedSubjects = [];

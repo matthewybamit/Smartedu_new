@@ -231,7 +231,7 @@ try {
 
                     <div class="lefty">
                         <div class="paragraph">Your learning experience is customized through study plans, learning techniques, study guides, and course recommendations based on your performance, learning style, and strengths. The system uses K-means clustering to group similar learners, tracks progress through quizzes and assignments, and provides real-time insights for continuous improvement.</div>
-                        <div class="persobutton"><button class="personalize-btn">Personalize</button></div>
+                        <div class="persobutton"><button class="personalize-btn"><a href="personalize.php">Personalize</a></button></div>
                     </div>
 
                     <div class="rightright">
