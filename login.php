@@ -7,7 +7,7 @@ include 'php_functions/login_function.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InkCognitos Login</title>
+    <title>Lumin Login</title>
     <link rel="stylesheet" href="css/login.css">
     <script type="module" src="js/firebaseAuth.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">

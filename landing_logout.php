@@ -259,6 +259,25 @@ try {
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+                 observer.unobserve(entry.target); // Optional: remove observer after it animates once
+             }
+             });
+         }, {
+          threshold: 0.1 // 10% of element must be visible
+         });
+
+             document.querySelectorAll('.left-section').forEach(elem => {
+             observer.observe(elem);
+         });
+             document.querySelectorAll('.right-section').forEach(elem => {
+             observer.observe(elem);
+         });
+        });
         // Toggle the visibility of the menu
         const burger = document.getElementById('burger');
         const navMenu = document.getElementById('nav-menu');

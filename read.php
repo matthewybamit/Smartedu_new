@@ -172,7 +172,8 @@ try {
 
             <!-- Lesson Content Area -->
             <div class="readcontent">
-                <button class="start" id="startQuizBtn">Start Quiz</button>
+                <button class="start" id="startQuizBtn">Start Quiz </button>
+                
 
                 <!-- Title and Number -->
                 <div id="lesson-title" class="scroll-read">
@@ -217,6 +218,11 @@ try {
 </footer>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const desc = document.getElementById('lesson-description');
+    const words = desc.innerText.split(' ').map(word => `<span>${word}</span>`);
+    desc.innerHTML = words.join(' ');
+    });
     // Toggle the visibility of the menu
     const burger = document.getElementById('burger');
     const navMenu = document.getElementById('nav-menu');

@@ -823,6 +823,10 @@ p {
   
 @media screen and (max-width: 768px) {
  
+  .search-bar{
+    width: 300px;
+    padding: 0%;
+  }
   .preferred-subjects {
     width: 80%;
     padding: 2rem;
@@ -962,18 +966,22 @@ p {
 
 
 @media screen and (min-width: 820px) and (max-width: 1366px) {
-    .search-bar {
+  .search-and-sort{
+    width: 70%;
+  } 
+  .search-bar {
         margin-right: 5%;
         margin-top: 2%;
         display: flex;
+        width: 300px;
         justify-content: flex-end;
         margin-bottom: 25px;
         position: relative;
     }
 
     .search-bar input {
-        width: 460px;
-        padding: 14px 45px 14px 20px;
+        width: 320px;
+        padding: 14px 40px 14px 20px;
         border: none;
         border-radius: 15px;
         font-size: 16px;
@@ -1058,6 +1066,7 @@ p {
 
     /* Responsive adjustments */
 @media screen and (max-width: 768px) {
+ 
   .kmeans-banner {
     width: 90%;
     padding: 1.5rem;

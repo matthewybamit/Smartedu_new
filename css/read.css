@@ -49,6 +49,9 @@
     .burger {
       display: flex;
     }
+    .related-card {
+      width: 140px;
+    }
   }
   
   /*----------------------------------------
@@ -171,10 +174,26 @@
   
   .readcontent p {
     font-size: 1rem;
+    text-align: justify;
     line-height: 1.6;
     color: var(--color-text);
   }
   
+  #lesson-description {
+    text-align: justify;
+  }
+
+  #lesson-description span {
+    display: inline-block; /* NOT just inline */
+    transition: background-color 0.3s;
+    cursor: pointer;
+  }
+  
+  #lesson-description span:hover {
+    background-color: #f5b975;
+  }
+  
+
   /*----------------------------------------
    Scrollable Panels & Scrollbar
   ----------------------------------------*/
@@ -293,7 +312,7 @@
   #startQuizBtn {
     /* Gradient background at a 45° angle */  
     background: linear-gradient(45deg, #122d64, #82a0dc); /* a selection of gradient buttons that change on hover in CodePen examples :contentReference[oaicite:0]{index=0} */
-    
+    margin-bottom: 20px;
     /* Remove default border and add smooth rounded corners */  
     border: none;  
     border-radius: 0.5rem; /* rounded corners are common for modern buttons :contentReference[oaicite:1]{index=1} */
